@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { FaPlane, FaTrain, FaBoxOpen, FaIdCard, FaFingerprint, FaAddressCard, FaArrowRight } from "react-icons/fa";
+import { FaPlane, FaTrain, FaBoxOpen, FaIdCard, FaFingerprint, FaAddressCard, FaArrowRight, FaCheckCircle, FaUsers, FaClock, FaHeadset } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -62,6 +62,59 @@ export default function Home() {
             <Button asChild size="lg" variant="outline" className="w-full sm:w-auto border-white text-primary bg-white hover:bg-white/90 font-semibold px-8 h-14 text-base">
               <Link href="/contact">Contact Us</Link>
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* About Us Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left: Text */}
+            <div>
+              <p className="text-primary font-semibold uppercase tracking-widest text-sm mb-3">About Us</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">
+                Your Trusted Partner for Every Service Need
+              </h2>
+              <p className="text-slate-600 leading-relaxed mb-5">
+                Global Enterprise is a leading multi-service centre based in India, dedicated to making essential government and travel services accessible to everyone. We started with a simple belief — no one should struggle with paperwork, long queues, or confusing processes.
+              </p>
+              <p className="text-slate-600 leading-relaxed mb-8">
+                From booking air and train tickets to processing PAN cards, Aadhaar updates, Voter IDs, and international parcels, we handle it all with speed, accuracy, and a personal touch. Our experienced team guides you through every step so you can focus on what matters most.
+              </p>
+              <ul className="space-y-3 mb-8">
+                {[
+                  "100% transparent pricing — no hidden charges",
+                  "Fast processing with real-time updates",
+                  "Experienced team with deep local knowledge",
+                  "Serving thousands of happy customers",
+                ].map((point) => (
+                  <li key={point} className="flex items-start gap-3 text-slate-700">
+                    <FaCheckCircle className="text-primary mt-1 shrink-0" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <Button asChild size="lg" className="font-semibold px-8 h-12">
+                <Link href="/contact">Get in Touch</Link>
+              </Button>
+            </div>
+
+            {/* Right: Stats */}
+            <div className="grid grid-cols-2 gap-6">
+              {[
+                { icon: FaUsers, value: "10,000+", label: "Happy Customers", bg: "bg-primary/10", color: "text-primary" },
+                { icon: FaClock, value: "5+ Years", label: "In Business", bg: "bg-emerald-50", color: "text-emerald-600" },
+                { icon: FaCheckCircle, value: "98%", label: "Success Rate", bg: "bg-amber-50", color: "text-amber-600" },
+                { icon: FaHeadset, value: "6 Days", label: "Expert Support", bg: "bg-violet-50", color: "text-violet-600" },
+              ].map(({ icon: Icon, value, label, bg, color }) => (
+                <div key={label} className={`${bg} rounded-2xl p-8 flex flex-col items-center text-center shadow-sm`}>
+                  <Icon className={`text-3xl ${color} mb-3`} />
+                  <span className="text-3xl font-bold text-slate-900 mb-1">{value}</span>
+                  <span className="text-sm text-slate-600 font-medium">{label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
