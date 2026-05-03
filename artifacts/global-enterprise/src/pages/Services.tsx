@@ -10,6 +10,16 @@ import {
 } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { SERVICE_CATEGORIES } from "@/lib/services";
+import { FaWalking, FaClock } from "react-icons/fa";
+
+const WALKIN_SERVICES = new Set([
+  "AEPS (Aadhaar Enabled Payment System)",
+  "Online Payments",
+]);
+
+const COMING_SOON_SERVICES = new Set([
+  "GST Registration",
+]);
 
 const SERVICE_ICONS: Record<string, React.ElementType> = {
   "Air Ticket Booking": FaPlane,
@@ -207,12 +217,24 @@ export default function Services() {
                               </div>
                             </div>
                             <div className="pt-1">
-                              <Button asChild size="sm" className="w-full group text-xs h-9">
-                                <Link href={`/apply?service=${encodeURIComponent(service.id)}`}>
-                                  Apply Now
-                                  <FaArrowRight className="ml-2 group-hover:translate-x-0.5 transition-transform" />
-                                </Link>
-                              </Button>
+                              {COMING_SOON_SERVICES.has(service.id) ? (
+                                <div className="w-full h-9 flex items-center justify-center gap-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-600 text-xs font-semibold">
+                                  <FaClock className="text-sm" />
+                                  Coming Soon
+                                </div>
+                              ) : WALKIN_SERVICES.has(service.id) ? (
+                                <div className="w-full h-9 flex items-center justify-center gap-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-500 text-xs font-semibold">
+                                  <FaWalking className="text-sm" />
+                                  Walk-in / Visit Us
+                                </div>
+                              ) : (
+                                <Button asChild size="sm" className="w-full group text-xs h-9">
+                                  <Link href={`/apply?service=${encodeURIComponent(service.id)}`}>
+                                    Apply Now
+                                    <FaArrowRight className="ml-2 group-hover:translate-x-0.5 transition-transform" />
+                                  </Link>
+                                </Button>
+                              )}
                             </div>
                           </div>
                         );
