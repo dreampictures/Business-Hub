@@ -10,20 +10,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FaCheckCircle, FaWhatsapp } from "react-icons/fa";
-
-const SERVICES = [
-  "Air Ticket Booking",
-  "Train Ticket Booking",
-  "International Parcel Booking",
-  "PAN Card Apply",
-  "Aadhaar Card Services",
-  "Voter Card Apply",
-] as const;
+import { SERVICE_CATEGORIES, ALL_SERVICE_IDS } from "@/lib/services";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").max(100),
   phone: z.string().min(10, "Enter a valid phone number").max(15),
-  service: z.enum(SERVICES, { required_error: "Please select a service" }),
+  service: z.enum(ALL_SERVICE_IDS, { required_error: "Please select a service" }),
   message: z.string().max(1000).optional(),
 });
 
@@ -32,25 +24,28 @@ type FormValues = z.infer<typeof formSchema>;
 export default function Apply() {
   const search = useSearch();
   const params = new URLSearchParams(search);
-  const preSelectedService = params.get("service") as (typeof SERVICES)[number] | null;
+  const preSelectedService = params.get("service");
 
   const [submitted, setSubmitted] = useState(false);
   const [submittedService, setSubmittedService] = useState("");
   const createApplication = useCreateApplication();
+
+  const isValidService = (s: string | null): s is (typeof ALL_SERVICE_IDS)[number] =>
+    !!s && (ALL_SERVICE_IDS as readonly string[]).includes(s);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       phone: "",
-      service: (SERVICES.includes(preSelectedService as any) ? preSelectedService : undefined) as (typeof SERVICES)[number] | undefined,
+      service: isValidService(preSelectedService) ? preSelectedService : undefined,
       message: "",
     },
   });
 
   useEffect(() => {
-    if (preSelectedService && SERVICES.includes(preSelectedService as any)) {
-      form.setValue("service", preSelectedService as (typeof SERVICES)[number]);
+    if (isValidService(preSelectedService)) {
+      form.setValue("service", preSelectedService);
     }
   }, [preSelectedService, form]);
 
@@ -160,11 +155,18 @@ export default function Apply() {
                             <SelectValue placeholder="Select a service" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
-                          {SERVICES.map((s) => (
-                            <SelectItem key={s} value={s}>
-                              {s}
-                            </SelectItem>
+                        <SelectContent className="max-h-72">
+                          {SERVICE_CATEGORIES.map((cat) => (
+                            <div key={cat.id}>
+                              <div className="px-3 py-1.5 text-xs font-bold text-slate-400 uppercase tracking-wider bg-slate-50 sticky top-0">
+                                {cat.name}
+                              </div>
+                              {cat.services.map((s) => (
+                                <SelectItem key={s.id} value={s.id} className="pl-5">
+                                  {s.name}
+                                </SelectItem>
+                              ))}
+                            </div>
                           ))}
                         </SelectContent>
                       </Select>

@@ -1,46 +1,30 @@
 import { Link } from "wouter";
-import { FaPlane, FaTrain, FaBoxOpen, FaIdCard, FaFingerprint, FaAddressCard, FaArrowRight, FaCheckCircle, FaUsers, FaClock, FaHeadset } from "react-icons/fa";
+import {
+  FaPlane, FaIdCard, FaClipboardList, FaPrint,
+  FaUniversity, FaShippingFast,
+  FaArrowRight, FaCheckCircle, FaUsers, FaClock, FaHeadset,
+} from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { SERVICE_CATEGORIES } from "@/lib/services";
 
-const services = [
-  {
-    id: "Air Ticket Booking",
-    title: "Air Ticket Booking",
-    description: "Domestic and international flight tickets with competitive pricing and dedicated support.",
-    icon: FaPlane,
-  },
-  {
-    id: "Train Ticket Booking",
-    title: "Train Ticket Booking",
-    description: "Hassle-free IRCTC train reservations, tatkal bookings, and PNR status checks.",
-    icon: FaTrain,
-  },
-  {
-    id: "International Parcel Booking",
-    title: "International Parcel Booking",
-    description: "Secure and timely document and parcel delivery across the globe.",
-    icon: FaBoxOpen,
-  },
-  {
-    id: "PAN Card Apply",
-    title: "PAN Card Apply",
-    description: "New PAN card applications, corrections, and duplicate card processing.",
-    icon: FaIdCard,
-  },
-  {
-    id: "Aadhaar Card Services",
-    title: "Aadhaar Card Services",
-    description: "Aadhaar updates, address change, and demographic corrections.",
-    icon: FaFingerprint,
-  },
-  {
-    id: "Voter Card Apply",
-    title: "Voter Card Apply",
-    description: "New voter ID registration and electoral roll corrections.",
-    icon: FaAddressCard,
-  },
-];
+const CATEGORY_ICONS: Record<string, React.ElementType> = {
+  travel: FaPlane,
+  documents: FaIdCard,
+  forms: FaClipboardList,
+  digital: FaPrint,
+  financial: FaUniversity,
+  parcel: FaShippingFast,
+};
+
+const CATEGORY_COLORS: Record<string, { bg: string; icon: string; badge: string }> = {
+  travel:    { bg: "bg-blue-50",    icon: "text-blue-600",    badge: "bg-blue-100 text-blue-700" },
+  documents: { bg: "bg-emerald-50", icon: "text-emerald-600", badge: "bg-emerald-100 text-emerald-700" },
+  forms:     { bg: "bg-violet-50",  icon: "text-violet-600",  badge: "bg-violet-100 text-violet-700" },
+  digital:   { bg: "bg-amber-50",   icon: "text-amber-600",   badge: "bg-amber-100 text-amber-700" },
+  financial: { bg: "bg-rose-50",    icon: "text-rose-600",    badge: "bg-rose-100 text-rose-700" },
+  parcel:    { bg: "bg-cyan-50",    icon: "text-cyan-600",    badge: "bg-cyan-100 text-cyan-700" },
+};
 
 export default function Home() {
   return (
@@ -53,7 +37,7 @@ export default function Home() {
             Professional Services for Everyday Needs
           </h1>
           <p className="text-lg md:text-xl mb-10 text-primary-foreground/90 max-w-2xl mx-auto leading-relaxed">
-            Your trusted local partner for travel ticketing, international parcels, and government document processing. We make complex procedures simple.
+            Your trusted local partner for travel ticketing, government documents, online forms, printing, finance, and international parcels. We make complex procedures simple.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button asChild size="lg" className="bg-white text-primary hover:bg-slate-100 w-full sm:w-auto font-semibold px-8 h-14 text-base">
@@ -80,7 +64,7 @@ export default function Home() {
                 Global Enterprise is a leading multi-service centre based in India, dedicated to making essential government and travel services accessible to everyone. We started with a simple belief — no one should struggle with paperwork, long queues, or confusing processes.
               </p>
               <p className="text-slate-600 leading-relaxed mb-8">
-                From booking air and train tickets to processing PAN cards, Aadhaar updates, Voter IDs, and international parcels, we handle it all with speed, accuracy, and a personal touch. Our experienced team guides you through every step so you can focus on what matters most.
+                From booking air and train tickets to processing PAN cards, Aadhaar updates, Voter IDs, passports, GST registration, and international parcels, we handle it all with speed, accuracy, and a personal touch.
               </p>
               <ul className="space-y-3 mb-8">
                 {[
@@ -119,39 +103,62 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services Grid */}
+      {/* Service Categories Grid */}
       <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Our Primary Services</h2>
-            <div className="w-24 h-1 bg-primary mx-auto rounded-full" />
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Our Services</h2>
+            <p className="text-slate-600 max-w-xl mx-auto">
+              We offer {SERVICE_CATEGORIES.reduce((acc, c) => acc + c.services.length, 0)}+ services across 6 categories to meet all your needs.
+            </p>
+            <div className="w-24 h-1 bg-primary mx-auto rounded-full mt-4" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => {
-              const Icon = service.icon;
+            {SERVICE_CATEGORIES.map((cat) => {
+              const Icon = CATEGORY_ICONS[cat.id] ?? FaIdCard;
+              const colors = CATEGORY_COLORS[cat.id] ?? { bg: "bg-slate-50", icon: "text-slate-600", badge: "bg-slate-100 text-slate-700" };
               return (
-                <Card key={service.id} className="border-0 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <Card key={cat.id} className="border-0 shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                   <CardHeader>
-                    <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 text-primary">
-                      <Icon className="text-2xl" />
+                    <div className={`w-14 h-14 ${colors.bg} rounded-2xl flex items-center justify-center mb-4`}>
+                      <Icon className={`text-2xl ${colors.icon}`} />
                     </div>
-                    <CardTitle className="text-xl mb-2">{service.title}</CardTitle>
-                    <CardDescription className="text-sm leading-relaxed">
-                      {service.description}
+                    <CardTitle className="text-xl mb-1">{cat.name}</CardTitle>
+                    <CardDescription className="text-sm">
+                      {cat.services.length} service{cat.services.length !== 1 ? "s" : ""} available
                     </CardDescription>
+                    {/* Show first 3 service names as tags */}
+                    <div className="flex flex-wrap gap-1.5 pt-2">
+                      {cat.services.slice(0, 3).map((s) => (
+                        <span key={s.id} className={`text-xs px-2 py-0.5 rounded-full font-medium ${colors.badge}`}>
+                          {s.name}
+                        </span>
+                      ))}
+                      {cat.services.length > 3 && (
+                        <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-slate-100 text-slate-500">
+                          +{cat.services.length - 3} more
+                        </span>
+                      )}
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <Link
-                      href={`/apply?service=${encodeURIComponent(service.id)}`}
+                      href="/services"
                       className="text-primary font-semibold flex items-center gap-2 hover:gap-3 transition-all text-sm uppercase tracking-wider"
                     >
-                      Apply Now <FaArrowRight />
+                      View All <FaArrowRight />
                     </Link>
                   </CardContent>
                 </Card>
               );
             })}
+          </div>
+
+          <div className="text-center mt-12">
+            <Button asChild size="lg" className="font-semibold px-10 h-13">
+              <Link href="/apply">Apply for Any Service</Link>
+            </Button>
           </div>
         </div>
       </section>
