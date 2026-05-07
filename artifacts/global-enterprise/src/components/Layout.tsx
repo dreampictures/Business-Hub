@@ -21,87 +21,146 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-[100dvh] flex flex-col font-sans">
       {/* ── Premium Navbar ── */}
-      <header
-        className="sticky top-0 z-50"
-        style={{
-          background: "rgba(7, 27, 74, 0.97)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          borderBottom: "1px solid rgba(255,255,255,0.07)",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.35)",
-        }}
-      >
-        <div className="container mx-auto px-4 lg:px-8">
+      <header className="navbar-root sticky top-0 z-50">
+
+        {/* Subtle inner gold shimmer across full width */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: 2,
+            left: 0,
+            right: 0,
+            height: "60px",
+            background: "radial-gradient(ellipse at 50% 0%, rgba(212,160,23,0.07) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+
+        <div className="container mx-auto px-4 lg:px-8 relative">
           <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-              <img src={logoImg} alt="Apna Enterprise" className="h-14 w-14 object-contain drop-shadow-lg" />
-              <div className="flex flex-col">
-                <span className="font-bold text-xl leading-tight text-white tracking-wide">Apna Enterprise</span>
-                <span className="text-xs font-medium tracking-widest" style={{ color: GOLD_LIGHT }}>
+
+            {/* ── Logo ── */}
+            <Link
+              href="/"
+              className="flex items-center gap-3 transition-opacity hover:opacity-95"
+              style={{ textDecoration: "none" }}
+            >
+              {/* Logo with golden aura */}
+              <div className="relative flex items-center justify-center flex-shrink-0">
+                <div className="logo-aura" />
+                <img
+                  src={logoImg}
+                  alt="Apna Enterprise"
+                  className="relative z-10 object-contain"
+                  style={{ height: "52px", width: "52px", filter: "drop-shadow(0 0 8px rgba(212,160,23,0.45))" }}
+                />
+              </div>
+
+              {/* Brand name */}
+              <div className="flex flex-col leading-tight">
+                <span
+                  className="font-extrabold tracking-wide"
+                  style={{
+                    fontSize: "1.2rem",
+                    color: "#FFFFFF",
+                    letterSpacing: "0.03em",
+                    textShadow: "0 1px 12px rgba(255,255,255,0.15)",
+                  }}
+                >
+                  Apna Enterprise
+                </span>
+                <span
+                  className="font-semibold tracking-widest"
+                  style={{
+                    fontSize: "0.6rem",
+                    color: GOLD_LIGHT,
+                    letterSpacing: "0.18em",
+                    textShadow: "0 0 10px rgba(212,160,23,0.45)",
+                  }}
+                >
                   PROFESSIONAL SERVICES
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-8">
+            {/* ── Desktop Nav ── */}
+            <nav className="hidden md:flex items-center gap-9">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="relative text-sm font-semibold uppercase tracking-wider transition-all duration-200 group"
-                  style={{ color: location === item.href ? GOLD_LIGHT : "rgba(255,255,255,0.72)" }}
+                  className={`nav-link${location === item.href ? " nav-link-active" : ""}`}
                 >
                   {item.label}
-                  <span
-                    className="absolute -bottom-1 left-0 h-0.5 rounded-full transition-all duration-300"
-                    style={{
-                      width: location === item.href ? "100%" : "0%",
-                      background: `linear-gradient(90deg, ${GOLD}, ${GOLD_LIGHT})`,
-                    }}
-                  />
                 </Link>
               ))}
             </nav>
 
-            {/* Mobile Hamburger */}
+            {/* ── Mobile Hamburger ── */}
             <button
-              className="md:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors"
+              className="md:hidden relative p-2.5 rounded-xl transition-all duration-200"
+              style={{
+                color: "rgba(255,255,255,0.85)",
+                background: "rgba(212,160,23,0.08)",
+                border: "1px solid rgba(212,160,23,0.2)",
+              }}
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
-              {mobileOpen ? <FaTimes className="text-xl" /> : <FaBars className="text-xl" />}
+              {mobileOpen ? <FaTimes className="text-lg" /> : <FaBars className="text-lg" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* ── Mobile Menu ── */}
         {mobileOpen && (
           <div
             className="md:hidden"
             style={{
-              background: "#071B4A",
-              borderTop: "1px solid rgba(255,255,255,0.08)",
+              background: "linear-gradient(180deg, #020A1A 0%, #071B4A 100%)",
+              borderTop: "1px solid rgba(212,160,23,0.12)",
+              boxShadow: "0 12px 32px rgba(0,0,0,0.5)",
             }}
           >
-            <nav className="container mx-auto px-4 py-4 flex flex-col gap-1">
+            {/* Gold top accent inside dropdown */}
+            <div
+              style={{
+                height: "1px",
+                background: "linear-gradient(90deg, transparent, rgba(212,160,23,0.3) 30%, rgba(242,193,78,0.5) 50%, rgba(212,160,23,0.3) 70%, transparent)",
+                marginBottom: "2px",
+              }}
+            />
+            <nav className="container mx-auto px-4 py-3 flex flex-col gap-1">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
-                  className="py-3 px-4 rounded-xl text-sm font-semibold uppercase tracking-wider transition-all duration-200"
-                  style={
-                    location === item.href
-                      ? { color: "#071B4A", background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})` }
-                      : { color: "rgba(255,255,255,0.75)", background: "transparent" }
-                  }
+                  className={`mobile-nav-item${location === item.href ? " mobile-nav-item-active" : ""}`}
                 >
                   {item.label}
                 </Link>
               ))}
             </nav>
+            <div className="px-4 pb-4">
+              <a
+                href="https://wa.me/918437566186?text=Hello%20Apna%20Enterprise"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-semibold"
+                style={{
+                  background: "rgba(37,211,102,0.12)",
+                  border: "1px solid rgba(37,211,102,0.25)",
+                  color: "#4ade80",
+                  textDecoration: "none",
+                }}
+                onClick={() => setMobileOpen(false)}
+              >
+                <FaWhatsapp className="text-sm" />
+                Chat on WhatsApp
+              </a>
+            </div>
           </div>
         )}
       </header>
