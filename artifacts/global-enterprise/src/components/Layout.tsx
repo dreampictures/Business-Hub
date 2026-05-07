@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
-import { FaBuilding, FaWhatsapp, FaStore } from "react-icons/fa";
+import { FaBuilding, FaWhatsapp } from "react-icons/fa";
 import { useGetVisitorCount } from "@workspace/api-client-react";
+import logoImg from "/logo.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -17,8 +18,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-              <FaStore className="text-3xl text-white" />
+            <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
+              <img src={logoImg} alt="Apna Enterprise" className="h-12 w-12 object-contain rounded-lg" />
               <div className="flex flex-col">
                 <span className="font-bold text-xl leading-tight">Apna Enterprise</span>
                 <span className="text-xs text-primary-foreground/80 font-medium tracking-wider">PROFESSIONAL SERVICES</span>
@@ -50,7 +51,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <FaStore className="text-2xl text-primary" />
+              <img src={logoImg} alt="Apna Enterprise" className="h-10 w-10 object-contain rounded-md" />
               <span className="font-bold text-lg text-white">Apna Enterprise</span>
             </div>
             <p className="text-sm leading-relaxed mb-6">
