@@ -260,9 +260,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4"
             style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
           >
-            <p className="text-xs text-slate-500">
-              &copy; {new Date().getFullYear()} Apna Enterprise. All rights reserved. | apnaenterprise.in
-            </p>
+            <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-3 text-xs text-slate-500">
+              <span>&copy; {new Date().getFullYear()} Apna Enterprise. All rights reserved. | apnaenterprise.in</span>
+              <span className="hidden sm:inline" style={{ color: "rgba(255,255,255,0.12)" }}>|</span>
+              <span>
+                Managed by{" "}
+                <a
+                  href="https://thedreampictures.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-semibold transition-colors hover:underline"
+                  style={{ color: "#F2C14E" }}
+                >
+                  DREAM PICTURES
+                </a>
+              </span>
+            </div>
             <VisitorCounter />
           </div>
         </div>
