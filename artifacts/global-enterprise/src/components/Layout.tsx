@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { FaBuilding, FaWhatsapp } from "react-icons/fa";
 import { useGetVisitorCount } from "@workspace/api-client-react";
-import logoImg from "/logo.jpg";
+import logoImg from "/logo.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
