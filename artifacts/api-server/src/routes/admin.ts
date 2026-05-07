@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db, usersTable, applicationsTable, visitorsTable } from "@workspace/db";
+import { db, usersTable, applicationsTable, visitorsTable, leadsTable } from "@workspace/db";
 import { eq, desc, count, sql } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -69,6 +69,7 @@ router.get("/admin/dashboard", requireAuth, async (req, res) => {
       .groupBy(applicationsTable.service);
 
     const [visitor] = await db.select().from(visitorsTable).limit(1);
+    const [{ totalLeads }] = await db.select({ totalLeads: count() }).from(leadsTable);
 
     res.json({
       totalApplications: total,
@@ -85,6 +86,7 @@ router.get("/admin/dashboard", requireAuth, async (req, res) => {
         count: s.count,
       })),
       visitorCount: visitor?.visitCount ?? 0,
+      totalLeads,
     });
   } catch (err) {
     req.log.error({ err }, "Failed to get dashboard stats");

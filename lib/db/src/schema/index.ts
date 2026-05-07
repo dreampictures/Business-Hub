@@ -31,3 +31,22 @@ export const visitorsTable = pgTable("visitors", {
 });
 
 export type Visitor = typeof visitorsTable.$inferSelect;
+
+export const leadsTable = pgTable("leads", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  phone: text("phone").notNull(),
+  page: text("page").default("/").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Lead = typeof leadsTable.$inferSelect;
+
+export const pageViewsTable = pgTable("page_views", {
+  id: serial("id").primaryKey(),
+  page: text("page").notNull(),
+  device: text("device").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type PageView = typeof pageViewsTable.$inferSelect;

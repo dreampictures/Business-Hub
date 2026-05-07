@@ -13,6 +13,7 @@ import Contact from "./pages/Contact";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import Layout from "./components/Layout";
+import LeadPopup from "./components/LeadPopup";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,31 @@ function TrackVisitor() {
       mutate();
     }
   }, [mutate]);
+
+  return null;
+}
+
+function PageViewTracker() {
+  const [location] = useLocation();
+  const lastPage = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (lastPage.current === location) return;
+    lastPage.current = location;
+
+    const isAdmin = location.startsWith("/admin");
+    if (isAdmin) return;
+
+    const device = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)
+      ? "mobile"
+      : "desktop";
+
+    fetch("/api/pageviews/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ page: location, device }),
+    }).catch(() => {});
+  }, [location]);
 
   return null;
 }
@@ -52,7 +78,9 @@ function App() {
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <TrackVisitor />
+          <PageViewTracker />
           <Router />
+          <LeadPopup />
         </WouterRouter>
         <Toaster />
       </TooltipProvider>
