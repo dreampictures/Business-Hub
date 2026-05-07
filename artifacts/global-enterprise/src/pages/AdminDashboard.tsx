@@ -12,7 +12,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { FaSignOutAlt, FaFileDownload, FaUsers, FaClipboardList, FaFilter, FaGlobeAsia, FaEye, FaTag } from "react-icons/fa";
+import { FaSignOutAlt, FaFileDownload, FaUsers, FaClipboardList, FaFilter, FaBuilding, FaEye, FaTag } from "react-icons/fa";
 import { SERVICE_CATEGORIES, SERVICE_TO_CATEGORY, ALL_SERVICE_IDS } from "@/lib/services";
 
 const CATEGORY_BADGE: Record<string, string> = {
@@ -101,7 +101,7 @@ export default function AdminDashboard() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <FaGlobeAsia className="text-2xl" />
+              <FaBuilding className="text-2xl" />
               <div>
                 <span className="font-bold text-lg">Apna Enterprise</span>
                 <span className="text-primary-foreground/70 text-xs ml-2">Admin Panel</span>
