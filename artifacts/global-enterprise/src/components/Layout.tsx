@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { FaBuilding, FaWhatsapp, FaGlobeAsia, FaSignInAlt } from "react-icons/fa";
+import { FaBuilding, FaWhatsapp, FaStore } from "react-icons/fa";
 import { useGetVisitorCount } from "@workspace/api-client-react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -18,9 +18,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-20">
             <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-              <FaGlobeAsia className="text-3xl text-white" />
+              <FaStore className="text-3xl text-white" />
               <div className="flex flex-col">
-                <span className="font-bold text-xl leading-tight">Global Enterprise</span>
+                <span className="font-bold text-xl leading-tight">Apna Enterprise</span>
                 <span className="text-xs text-primary-foreground/80 font-medium tracking-wider">PROFESSIONAL SERVICES</span>
               </div>
             </Link>
@@ -37,12 +37,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   {item.label}
                 </Link>
               ))}
-              <Link
-                href="/admin/login"
-                className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-primary-foreground/70 hover:text-white transition-colors ml-4"
-              >
-                <FaSignInAlt /> Admin
-              </Link>
             </nav>
           </div>
         </div>
@@ -56,11 +50,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <FaGlobeAsia className="text-2xl text-primary" />
-              <span className="font-bold text-lg text-white">Global Enterprise</span>
+              <FaStore className="text-2xl text-primary" />
+              <span className="font-bold text-lg text-white">Apna Enterprise</span>
             </div>
             <p className="text-sm leading-relaxed mb-6">
-              Your trusted partner for all travel ticketing, parcel booking, and government document services in India. Fast, reliable, and professional.
+              Your trusted partner for travel ticketing, government documents, online forms, printing, financial services, and international parcels in Firozepur, Punjab.
             </p>
           </div>
           <div>
@@ -79,25 +73,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <h3 className="font-bold text-white mb-6 uppercase tracking-wider text-sm">Contact Information</h3>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-3">
-                <FaBuilding className="mt-1 text-primary" />
-                <span>123 Business Plaza, Connaught Place<br />New Delhi - 110001</span>
+                <FaBuilding className="mt-1 text-primary flex-shrink-0" />
+                <span>Apna Enterprise, Dharamkot Road Jogewala,<br />Firozepur, Punjab – 142044</span>
               </li>
               <li className="flex items-center gap-3">
-                <FaWhatsapp className="text-primary text-lg" />
-                <span>+91 98765 43210</span>
+                <FaWhatsapp className="text-primary text-lg flex-shrink-0" />
+                <span>+91 84375 66186</span>
               </li>
             </ul>
           </div>
         </div>
         <div className="container mx-auto px-4 lg:px-8 mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between">
-          <p className="text-xs">&copy; {new Date().getFullYear()} Global Enterprise. All rights reserved.</p>
+          <p className="text-xs">&copy; {new Date().getFullYear()} Apna Enterprise. All rights reserved. | apnaenterprise.in</p>
           <VisitorCounter />
         </div>
       </footer>
 
       {/* Floating WhatsApp Button */}
       <a
-        href="https://wa.me/919876543210?text=Hello%20Global%20Enterprise%2C%20I%20want%20to%20enquire"
+        href="https://wa.me/918437566186?text=Hello%20Apna%20Enterprise%2C%20I%20want%20to%20enquire"
         target="_blank"
         rel="noreferrer"
         className="fixed bottom-6 right-6 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:shadow-xl hover:bg-[#20bd5a] transition-all z-50 flex items-center justify-center transform hover:scale-105"

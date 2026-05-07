@@ -62,7 +62,7 @@ export default function Apply() {
     );
   }
 
-  const waLink = `https://wa.me/919876543210?text=${encodeURIComponent(`Hello Global Enterprise, I have submitted a request for ${submittedService}. Please assist me.`)}`;
+  const waLink = `https://wa.me/918437566186?text=${encodeURIComponent(`Hello Apna Enterprise, I have submitted a request for ${submittedService}. Please assist me.`)}`;
 
   if (submitted) {
     return (

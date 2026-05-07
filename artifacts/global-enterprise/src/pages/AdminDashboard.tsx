@@ -103,7 +103,7 @@ export default function AdminDashboard() {
             <div className="flex items-center gap-3">
               <FaGlobeAsia className="text-2xl" />
               <div>
-                <span className="font-bold text-lg">Global Enterprise</span>
+                <span className="font-bold text-lg">Apna Enterprise</span>
                 <span className="text-primary-foreground/70 text-xs ml-2">Admin Panel</span>
               </div>
             </div>

@@ -26,8 +26,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Phone</p>
-                    <a href="tel:+919876543210" className="text-xl font-bold text-slate-900 hover:text-primary transition-colors">
-                      +91 98765 43210
+                    <a href="tel:+918437566186" className="text-xl font-bold text-slate-900 hover:text-primary transition-colors">
+                      +91 84375 66186
                     </a>
                   </div>
                 </div>
@@ -39,7 +39,7 @@ export default function Contact() {
                   <div>
                     <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">WhatsApp</p>
                     <a
-                      href="https://wa.me/919876543210?text=Hello%20Global%20Enterprise%2C%20I%20need%20assistance"
+                      href="https://wa.me/918437566186?text=Hello%20Apna%20Enterprise%2C%20I%20need%20assistance"
                       target="_blank"
                       rel="noreferrer"
                       className="inline-flex items-center gap-2 bg-[#25D366] text-white font-semibold py-2 px-5 rounded-xl hover:bg-[#20bd5a] transition-colors text-sm mt-1"
@@ -56,8 +56,8 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Email</p>
-                    <a href="mailto:info@globalenterprise.in" className="text-slate-800 hover:text-primary transition-colors font-medium">
-                      info@globalenterprise.in
+                    <a href="mailto:info@apnaenterprise.in" className="text-slate-800 hover:text-primary transition-colors font-medium">
+                      info@apnaenterprise.in
                     </a>
                   </div>
                 </div>
@@ -69,9 +69,9 @@ export default function Contact() {
                   <div>
                     <p className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Address</p>
                     <p className="text-slate-800 font-medium leading-relaxed">
-                      123 Business Plaza,<br />
-                      Connaught Place,<br />
-                      New Delhi - 110001
+                      Apna Enterprise,<br />
+                      Dharamkot Road Jogewala,<br />
+                      Firozepur, Punjab – 142044
                     </p>
                   </div>
                 </div>
@@ -93,8 +93,8 @@ export default function Contact() {
             <div className="flex flex-col gap-6">
               <div className="bg-white rounded-2xl shadow-md border border-slate-100 overflow-hidden">
                 <iframe
-                  title="Global Enterprise Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.9104282093516!2d77.21887631508358!3d28.632890082419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd18d91c3b99%3A0xb8cb427e3ef48c2e!2sConnaught%20Place%2C%20New%20Delhi%2C%20Delhi%20110001!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+                  title="Apna Enterprise Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3431.0!2d74.6117!3d30.9353!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391736c0b0b0b0b0%3A0x0!2sFirozpur%2C%20Punjab!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
                   width="100%"
                   height="380"
                   style={{ border: 0 }}
@@ -110,7 +110,7 @@ export default function Contact() {
                   Our team is available on WhatsApp for quick queries and status updates on your applications.
                 </p>
                 <a
-                  href="https://wa.me/919876543210?text=Hello%20Global%20Enterprise%2C%20I%20need%20immediate%20assistance"
+                  href="https://wa.me/918437566186?text=Hello%20Apna%20Enterprise%2C%20I%20need%20immediate%20assistance"
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center gap-2 bg-white text-primary font-semibold py-2.5 px-6 rounded-xl hover:bg-slate-100 transition-colors text-sm"

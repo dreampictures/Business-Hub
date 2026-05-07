@@ -61,7 +61,7 @@ export default function Home() {
                 Your Trusted Partner for Every Service Need
               </h2>
               <p className="text-slate-600 leading-relaxed mb-5">
-                Global Enterprise is a leading multi-service centre based in India, dedicated to making essential government and travel services accessible to everyone. We started with a simple belief — no one should struggle with paperwork, long queues, or confusing processes.
+                Apna Enterprise is a trusted multi-service centre in Firozepur, Punjab, dedicated to making essential government and travel services accessible to everyone. We started with a simple belief — no one should struggle with paperwork, long queues, or confusing processes.
               </p>
               <p className="text-slate-600 leading-relaxed mb-8">
                 From booking air and train tickets to processing PAN cards, Aadhaar updates, Voter IDs, passports, GST registration, and international parcels, we handle it all with speed, accuracy, and a personal touch.
