@@ -40,10 +40,10 @@ export default function Home() {
             Your trusted local partner for travel ticketing, government documents, online forms, printing, finance, and international parcels. We make complex procedures simple.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="bg-white text-primary hover:bg-slate-100 w-full sm:w-auto font-semibold px-8 h-14 text-base">
+            <Button asChild size="lg" className="w-full sm:w-auto font-semibold px-8 h-14 text-base border-0 text-slate-900" style={{background: "hsl(43 88% 42%)", hover: "hsl(43 88% 36%)"}}>
               <Link href="/services">Explore Services</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="w-full sm:w-auto border-white text-primary bg-white hover:bg-white/90 font-semibold px-8 h-14 text-base">
+            <Button asChild size="lg" variant="outline" className="w-full sm:w-auto border-white text-white bg-transparent hover:bg-white/10 font-semibold px-8 h-14 text-base">
               <Link href="/contact">Contact Us</Link>
             </Button>
           </div>
@@ -56,7 +56,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Left: Text */}
             <div>
-              <p className="text-primary font-semibold uppercase tracking-widest text-sm mb-3">About Us</p>
+              <p className="font-semibold uppercase tracking-widest text-sm mb-3" style={{color: "hsl(43 88% 42%)"}}>About Us</p>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight">
                 Your Trusted Partner for Every Service Need
               </h2>
@@ -79,7 +79,7 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-              <Button asChild size="lg" className="font-semibold px-8 h-12">
+              <Button asChild size="lg" className="font-semibold px-8 h-12 border-0 text-slate-900" style={{background: "hsl(43 88% 42%)"}}>
                 <Link href="/contact">Get in Touch</Link>
               </Button>
             </div>
@@ -111,7 +111,7 @@ export default function Home() {
             <p className="text-slate-600 max-w-xl mx-auto">
               We offer {SERVICE_CATEGORIES.reduce((acc, c) => acc + c.services.length, 0)}+ services across 6 categories to meet all your needs.
             </p>
-            <div className="w-24 h-1 bg-primary mx-auto rounded-full mt-4" />
+            <div className="w-24 h-1 mx-auto rounded-full mt-4" style={{background: "hsl(43 88% 42%)"}} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -156,7 +156,7 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-12">
-            <Button asChild size="lg" className="font-semibold px-10 h-13">
+            <Button asChild size="lg" className="font-semibold px-10 h-12 border-0 text-slate-900" style={{background: "hsl(43 88% 42%)"}}>
               <Link href="/apply">Apply for Any Service</Link>
             </Button>
           </div>

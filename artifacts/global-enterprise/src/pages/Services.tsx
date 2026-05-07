@@ -228,7 +228,7 @@ export default function Services() {
                                   Walk-in / Visit Us
                                 </div>
                               ) : (
-                                <Button asChild size="sm" className="w-full group text-xs h-9">
+                                <Button asChild size="sm" className="w-full group text-xs h-9 border-0 text-slate-900 font-semibold" style={{background: "hsl(43 88% 42%)"}}>
                                   <Link href={`/apply?service=${encodeURIComponent(service.id)}`}>
                                     Apply Now
                                     <FaArrowRight className="ml-2 group-hover:translate-x-0.5 transition-transform" />

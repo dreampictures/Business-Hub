@@ -22,7 +22,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <img src={logoImg} alt="Apna Enterprise" className="h-12 w-12 object-contain rounded-lg" />
               <div className="flex flex-col">
                 <span className="font-bold text-xl leading-tight">Apna Enterprise</span>
-                <span className="text-xs text-primary-foreground/80 font-medium tracking-wider">PROFESSIONAL SERVICES</span>
+                <span className="text-xs font-medium tracking-wider" style={{color: "hsl(43 88% 62%)"}}>PROFESSIONAL SERVICES</span>
               </div>
             </Link>
 
@@ -32,8 +32,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   key={item.href}
                   href={item.href}
                   className={`text-sm font-semibold uppercase tracking-wider transition-colors ${
-                    location === item.href ? "text-white border-b-2 border-white pb-1" : "text-primary-foreground/70 hover:text-white"
+                    location === item.href
+                      ? "pb-1 border-b-2"
+                      : "text-primary-foreground/70 hover:text-white"
                   }`}
+                  style={location === item.href ? { color: "hsl(43 88% 62%)", borderColor: "hsl(43 88% 52%)" } : {}}
                 >
                   {item.label}
                 </Link>
