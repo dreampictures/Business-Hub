@@ -6,8 +6,12 @@ import { useAdminLogin } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { FaGlobeAsia, FaLock } from "react-icons/fa";
+import { FaLock, FaShieldAlt } from "react-icons/fa";
 import { useEffect } from "react";
+import logoImg from "/logo.png";
+
+const GOLD = "#D4A017";
+const GOLD_LIGHT = "#F2C14E";
 
 const formSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -46,21 +50,59 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-10">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <FaGlobeAsia className="text-4xl text-primary" />
-            <span className="font-bold text-2xl text-slate-900">Global Enterprise</span>
+    <div
+      className="min-h-screen flex items-center justify-center py-12 px-4"
+      style={{ background: "linear-gradient(135deg, #050D24 0%, #071B4A 60%, #0d2069 100%)" }}
+    >
+      {/* Background radial glow */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "radial-gradient(ellipse at 50% 30%, rgba(212,160,23,0.07) 0%, transparent 65%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="w-full max-w-md relative z-10">
+        {/* Gold top line */}
+        <div className="gold-line w-20 mx-auto mb-8" />
+
+        {/* Brand Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <img src={logoImg} alt="Apna Enterprise" className="h-16 w-16 object-contain drop-shadow-xl" />
+            <div className="text-left">
+              <span className="font-extrabold text-2xl text-white block tracking-wide">Apna Enterprise</span>
+              <span className="text-xs font-semibold tracking-widest" style={{ color: GOLD_LIGHT }}>
+                ADMIN PORTAL
+              </span>
+            </div>
           </div>
-          <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <FaLock className="text-primary text-2xl" />
+
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5"
+            style={{ background: "rgba(212,160,23,0.12)", border: "1px solid rgba(212,160,23,0.25)" }}
+          >
+            <FaLock style={{ color: GOLD, fontSize: "1.6rem" }} />
           </div>
-          <h1 className="text-2xl font-bold text-slate-900">Admin Login</h1>
-          <p className="text-slate-500 text-sm mt-2">Sign in to access the admin panel</p>
+          <h1 className="text-2xl font-extrabold text-white">Secure Login</h1>
+          <p className="text-sm mt-1" style={{ color: "rgba(255,255,255,0.5)" }}>
+            Sign in to access the admin panel
+          </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-md border border-slate-100 p-8">
+        {/* Glass Form Card */}
+        <div
+          className="rounded-2xl p-8"
+          style={{
+            background: "rgba(255,255,255,0.05)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            boxShadow: "0 8px 40px rgba(0,0,0,0.35)",
+          }}
+        >
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
               <FormField
@@ -68,9 +110,17 @@ export default function AdminLogin() {
                 name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel className="text-sm font-semibold" style={{ color: "rgba(255,255,255,0.8)" }}>
+                      Username
+                    </FormLabel>
                     <FormControl>
-                      <Input placeholder="admin" autoComplete="username" {...field} />
+                      <Input
+                        placeholder="Enter username"
+                        autoComplete="username"
+                        className="h-11 rounded-xl text-slate-900"
+                        style={{ background: "rgba(255,255,255,0.92)", border: "1.5px solid rgba(255,255,255,0.2)" }}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -82,9 +132,18 @@ export default function AdminLogin() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel className="text-sm font-semibold" style={{ color: "rgba(255,255,255,0.8)" }}>
+                      Password
+                    </FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="••••••••" autoComplete="current-password" {...field} />
+                      <Input
+                        type="password"
+                        placeholder="••••••••"
+                        autoComplete="current-password"
+                        className="h-11 rounded-xl text-slate-900"
+                        style={{ background: "rgba(255,255,255,0.92)", border: "1.5px solid rgba(255,255,255,0.2)" }}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -92,14 +151,17 @@ export default function AdminLogin() {
               />
 
               {adminLogin.isError && (
-                <div className="bg-destructive/10 text-destructive text-sm rounded-lg p-3 text-center">
+                <div
+                  className="text-sm rounded-xl p-3 text-center font-medium"
+                  style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", color: "#fca5a5" }}
+                >
                   Invalid username or password. Please try again.
                 </div>
               )}
 
               <Button
                 type="submit"
-                className="w-full h-12 text-base font-semibold"
+                className="btn-gold w-full h-12 text-base rounded-xl mt-1"
                 disabled={adminLogin.isPending}
               >
                 {adminLogin.isPending ? "Signing in..." : "Sign In"}
@@ -108,9 +170,10 @@ export default function AdminLogin() {
           </Form>
         </div>
 
-        <p className="text-center text-xs text-slate-400 mt-6">
-          This area is restricted to authorised administrators only.
-        </p>
+        <div className="flex items-center justify-center gap-2 mt-6" style={{ color: "rgba(255,255,255,0.3)" }}>
+          <FaShieldAlt className="text-xs" />
+          <p className="text-xs">This area is restricted to authorised administrators only.</p>
+        </div>
       </div>
     </div>
   );

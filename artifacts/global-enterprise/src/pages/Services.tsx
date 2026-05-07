@@ -12,6 +12,9 @@ import { Button } from "@/components/ui/button";
 import { SERVICE_CATEGORIES } from "@/lib/services";
 import { FaWalking, FaClock } from "react-icons/fa";
 
+const GOLD = "#D4A017";
+const GOLD_LIGHT = "#F2C14E";
+
 const WALKIN_SERVICES = new Set([
   "AEPS (Aadhaar Enabled Payment System)",
   "Online Payments",
@@ -60,22 +63,22 @@ const CATEGORY_ICONS: Record<string, React.ElementType> = {
   parcel: FaShippingFast,
 };
 
-const CATEGORY_BG: Record<string, string> = {
-  travel: "bg-blue-600",
-  documents: "bg-emerald-600",
-  forms: "bg-violet-600",
-  digital: "bg-amber-600",
-  financial: "bg-rose-600",
-  parcel: "bg-cyan-600",
+const CATEGORY_GRADIENT: Record<string, string> = {
+  travel:    "linear-gradient(135deg, #1e40af, #3b82f6)",
+  documents: "linear-gradient(135deg, #065f46, #10b981)",
+  forms:     "linear-gradient(135deg, #5b21b6, #8b5cf6)",
+  digital:   "linear-gradient(135deg, #92400e, #f59e0b)",
+  financial: "linear-gradient(135deg, #9f1239, #f43f5e)",
+  parcel:    "linear-gradient(135deg, #164e63, #06b6d4)",
 };
 
-const CATEGORY_LIGHT: Record<string, string> = {
-  travel: "bg-blue-50 text-blue-600",
+const CATEGORY_ICON_LIGHT: Record<string, string> = {
+  travel:    "bg-blue-50 text-blue-600",
   documents: "bg-emerald-50 text-emerald-600",
-  forms: "bg-violet-50 text-violet-600",
-  digital: "bg-amber-50 text-amber-600",
+  forms:     "bg-violet-50 text-violet-600",
+  digital:   "bg-amber-50 text-amber-600",
   financial: "bg-rose-50 text-rose-600",
-  parcel: "bg-cyan-50 text-cyan-600",
+  parcel:    "bg-cyan-50 text-cyan-600",
 };
 
 export default function Services() {
@@ -96,29 +99,48 @@ export default function Services() {
 
   return (
     <div className="flex flex-col min-h-full">
-      {/* Page Header */}
-      <section className="bg-primary text-primary-foreground py-16">
-        <div className="container mx-auto px-4 lg:px-8 text-center">
-          <h1 className="text-4xl font-bold mb-4">Our Services</h1>
-          <p className="text-primary-foreground/80 text-lg max-w-2xl mx-auto">
+      {/* ── Page Header ── */}
+      <section className="hero-navy text-white py-16">
+        <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">
+          <p className="font-semibold uppercase tracking-widest text-xs mb-3" style={{ color: GOLD_LIGHT }}>
+            All Services
+          </p>
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Our Services</h1>
+          <div className="gold-line w-20 mx-auto mb-5" />
+          <p className="max-w-2xl mx-auto text-lg" style={{ color: "rgba(255,255,255,0.75)" }}>
             Travel, government documents, online forms, printing, finance, and more — all under one roof.
           </p>
         </div>
       </section>
 
-      {/* Search + Category Filter */}
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-20 shadow-sm">
+      {/* ── Search + Category Filter ── */}
+      <div
+        className="border-b sticky top-[80px] z-20"
+        style={{ background: "rgba(255,255,255,0.98)", backdropFilter: "blur(8px)", borderColor: "#e8edf5", boxShadow: "0 2px 12px rgba(7,27,74,0.06)" }}
+      >
         <div className="container mx-auto px-4 lg:px-8 py-4">
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
             {/* Search */}
             <div className="relative flex-1 max-w-md">
-              <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
+              <FaSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
               <input
                 type="text"
                 placeholder="Search services..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-9 pr-9 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/40 bg-slate-50"
+                className="w-full pl-10 pr-9 py-2.5 text-sm rounded-xl focus:outline-none transition-all"
+                style={{
+                  border: "1.5px solid #d1d9e8",
+                  background: "#f8fafd",
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = GOLD;
+                  e.target.style.boxShadow = "0 0 0 3px rgba(212,160,23,0.12)";
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#d1d9e8";
+                  e.target.style.boxShadow = "none";
+                }}
               />
               {search && (
                 <button
@@ -134,11 +156,12 @@ export default function Services() {
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setActiveCategory(null)}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
+                className="px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200"
+                style={
                   activeCategory === null
-                    ? "bg-primary text-white border-primary"
-                    : "bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary"
-                }`}
+                    ? { background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`, color: "#1a1200", borderColor: "transparent", boxShadow: "0 2px 10px rgba(212,160,23,0.3)" }
+                    : { background: "white", color: "#64748b", borderColor: "#d1d9e8" }
+                }
               >
                 All
               </button>
@@ -146,11 +169,12 @@ export default function Services() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(activeCategory === cat.id ? null : cat.id)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition-colors ${
+                  className="px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200"
+                  style={
                     activeCategory === cat.id
-                      ? "bg-primary text-white border-primary"
-                      : "bg-white text-slate-600 border-slate-200 hover:border-primary hover:text-primary"
-                  }`}
+                      ? { background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})`, color: "#1a1200", borderColor: "transparent", boxShadow: "0 2px 10px rgba(212,160,23,0.3)" }
+                      : { background: "white", color: "#64748b", borderColor: "#d1d9e8" }
+                  }
                 >
                   {cat.name}
                 </button>
@@ -160,8 +184,8 @@ export default function Services() {
         </div>
       </div>
 
-      {/* Services */}
-      <section className="py-12 bg-slate-50 flex-1">
+      {/* ── Services List ── */}
+      <section className="py-12 flex-1" style={{ background: "#f8fafd" }}>
         <div className="container mx-auto px-4 lg:px-8">
           {filtered.length === 0 ? (
             <div className="text-center py-24 text-slate-500">
@@ -170,42 +194,45 @@ export default function Services() {
               <p className="text-sm mt-1">Try a different search term or clear the filter.</p>
               <button
                 onClick={() => { setSearch(""); setActiveCategory(null); }}
-                className="mt-4 text-primary text-sm font-semibold hover:underline"
+                className="mt-4 text-sm font-semibold hover:underline"
+                style={{ color: GOLD }}
               >
                 Clear filters
               </button>
             </div>
           ) : (
-            <div className="space-y-12">
+            <div className="space-y-14">
               {filtered.map((cat) => {
                 const CatIcon = CATEGORY_ICONS[cat.id] ?? FaFileAlt;
-                const catBg = CATEGORY_BG[cat.id] ?? "bg-primary";
+                const catGradient = CATEGORY_GRADIENT[cat.id] ?? "linear-gradient(135deg, #071B4A, #1a3a8a)";
+                const lightClass = CATEGORY_ICON_LIGHT[cat.id] ?? "bg-primary/10 text-primary";
                 return (
                   <div key={cat.id}>
                     {/* Category Header */}
                     <div className="flex items-center gap-3 mb-6">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white ${catBg}`}>
-                        <CatIcon className="text-lg" />
+                      <div
+                        className="w-11 h-11 rounded-xl flex items-center justify-center text-white text-lg flex-shrink-0"
+                        style={{ background: catGradient, boxShadow: "0 3px 12px rgba(0,0,0,0.15)" }}
+                      >
+                        <CatIcon />
                       </div>
-                      <h2 className="text-xl font-bold text-slate-900">{cat.name}</h2>
-                      <span className="text-xs text-slate-400 font-medium">
-                        {cat.services.length} service{cat.services.length !== 1 ? "s" : ""}
-                      </span>
+                      <div>
+                        <h2 className="text-xl font-bold text-slate-900">{cat.name}</h2>
+                        <span className="text-xs text-slate-400 font-medium">
+                          {cat.services.length} service{cat.services.length !== 1 ? "s" : ""}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Services grid */}
+                    {/* Service Cards Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                       {cat.services.map((service) => {
                         const Icon = SERVICE_ICONS[service.id] ?? FaFileAlt;
-                        const lightClass = CATEGORY_LIGHT[cat.id] ?? "bg-primary/10 text-primary";
                         return (
-                          <div
-                            key={service.id}
-                            className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 p-6 flex flex-col gap-4 border border-slate-100"
-                          >
+                          <div key={service.id} className="card-premium p-5 flex flex-col gap-4">
                             <div className="flex items-start gap-4">
-                              <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${lightClass}`}>
-                                <Icon className="text-xl" />
+                              <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-xl ${lightClass}`}>
+                                <Icon />
                               </div>
                               <div className="flex-1 min-w-0">
                                 <h3 className="font-bold text-slate-900 text-sm leading-snug mb-1">
@@ -218,17 +245,20 @@ export default function Services() {
                             </div>
                             <div className="pt-1">
                               {COMING_SOON_SERVICES.has(service.id) ? (
-                                <div className="w-full h-9 flex items-center justify-center gap-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-600 text-xs font-semibold">
+                                <div
+                                  className="w-full h-9 flex items-center justify-center gap-2 rounded-xl text-xs font-semibold"
+                                  style={{ background: "rgba(212,160,23,0.08)", border: "1px solid rgba(212,160,23,0.25)", color: GOLD }}
+                                >
                                   <FaClock className="text-sm" />
                                   Coming Soon
                                 </div>
                               ) : WALKIN_SERVICES.has(service.id) ? (
-                                <div className="w-full h-9 flex items-center justify-center gap-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-500 text-xs font-semibold">
+                                <div className="w-full h-9 flex items-center justify-center gap-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-500 text-xs font-semibold">
                                   <FaWalking className="text-sm" />
                                   Walk-in / Visit Us
                                 </div>
                               ) : (
-                                <Button asChild size="sm" className="w-full group text-xs h-9 border-0 text-slate-900 font-semibold" style={{background: "hsl(43 88% 42%)"}}>
+                                <Button asChild size="sm" className="btn-gold w-full h-9 rounded-xl text-xs group">
                                   <Link href={`/apply?service=${encodeURIComponent(service.id)}`}>
                                     Apply Now
                                     <FaArrowRight className="ml-2 group-hover:translate-x-0.5 transition-transform" />

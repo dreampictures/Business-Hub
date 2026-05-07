@@ -1,10 +1,15 @@
 import { Link, useLocation } from "wouter";
-import { FaBuilding, FaWhatsapp } from "react-icons/fa";
+import { FaBuilding, FaWhatsapp, FaBars, FaTimes, FaEnvelope, FaPhone } from "react-icons/fa";
 import { useGetVisitorCount } from "@workspace/api-client-react";
 import logoImg from "/logo.png";
+import { useState } from "react";
+
+const GOLD = "#D4A017";
+const GOLD_LIGHT = "#F2C14E";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -15,81 +20,192 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-[100dvh] flex flex-col font-sans">
-      <header className="bg-primary text-primary-foreground shadow-md sticky top-0 z-50">
+      {/* ── Premium Navbar ── */}
+      <header
+        className="sticky top-0 z-50"
+        style={{
+          background: "rgba(7, 27, 74, 0.97)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+          borderBottom: "1px solid rgba(255,255,255,0.07)",
+          boxShadow: "0 4px 24px rgba(0,0,0,0.35)",
+        }}
+      >
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity">
-              <img src={logoImg} alt="Apna Enterprise" className="h-12 w-12 object-contain rounded-lg" />
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
+              <img src={logoImg} alt="Apna Enterprise" className="h-14 w-14 object-contain drop-shadow-lg" />
               <div className="flex flex-col">
-                <span className="font-bold text-xl leading-tight">Apna Enterprise</span>
-                <span className="text-xs font-medium tracking-wider" style={{color: "hsl(43 88% 62%)"}}>PROFESSIONAL SERVICES</span>
+                <span className="font-bold text-xl leading-tight text-white tracking-wide">Apna Enterprise</span>
+                <span className="text-xs font-medium tracking-widest" style={{ color: GOLD_LIGHT }}>
+                  PROFESSIONAL SERVICES
+                </span>
               </div>
             </Link>
 
+            {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-8">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-semibold uppercase tracking-wider transition-colors ${
+                  className="relative text-sm font-semibold uppercase tracking-wider transition-all duration-200 group"
+                  style={{ color: location === item.href ? GOLD_LIGHT : "rgba(255,255,255,0.72)" }}
+                >
+                  {item.label}
+                  <span
+                    className="absolute -bottom-1 left-0 h-0.5 rounded-full transition-all duration-300"
+                    style={{
+                      width: location === item.href ? "100%" : "0%",
+                      background: `linear-gradient(90deg, ${GOLD}, ${GOLD_LIGHT})`,
+                    }}
+                  />
+                </Link>
+              ))}
+            </nav>
+
+            {/* Mobile Hamburger */}
+            <button
+              className="md:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? <FaTimes className="text-xl" /> : <FaBars className="text-xl" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileOpen && (
+          <div
+            className="md:hidden"
+            style={{
+              background: "#071B4A",
+              borderTop: "1px solid rgba(255,255,255,0.08)",
+            }}
+          >
+            <nav className="container mx-auto px-4 py-4 flex flex-col gap-1">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="py-3 px-4 rounded-xl text-sm font-semibold uppercase tracking-wider transition-all duration-200"
+                  style={
                     location === item.href
-                      ? "pb-1 border-b-2"
-                      : "text-primary-foreground/70 hover:text-white"
-                  }`}
-                  style={location === item.href ? { color: "hsl(43 88% 62%)", borderColor: "hsl(43 88% 52%)" } : {}}
+                      ? { color: "#071B4A", background: `linear-gradient(135deg, ${GOLD}, ${GOLD_LIGHT})` }
+                      : { color: "rgba(255,255,255,0.75)", background: "transparent" }
+                  }
                 >
                   {item.label}
                 </Link>
               ))}
             </nav>
           </div>
-        </div>
+        )}
       </header>
 
       <main className="flex-1 flex flex-col">
         {children}
       </main>
 
-      <footer className="bg-slate-900 text-slate-300 py-12 mt-auto">
-        <div className="container mx-auto px-4 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <div className="flex items-center gap-3 mb-6">
-              <img src={logoImg} alt="Apna Enterprise" className="h-10 w-10 object-contain rounded-md" />
-              <span className="font-bold text-lg text-white">Apna Enterprise</span>
+      {/* ── Premium Footer ── */}
+      <footer style={{ background: "#050D24" }} className="text-slate-300">
+        {/* Gold top separator */}
+        <div className="gold-divider" />
+
+        <div className="container mx-auto px-4 lg:px-8 pt-12 pb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-3 mb-5">
+                <img src={logoImg} alt="Apna Enterprise" className="h-12 w-12 object-contain" />
+                <div>
+                  <span className="font-bold text-lg text-white block tracking-wide">Apna Enterprise</span>
+                  <span className="text-xs tracking-widest font-medium" style={{ color: GOLD }}>
+                    YOUR TRUSTED SERVICE PARTNER
+                  </span>
+                </div>
+              </div>
+              <p className="text-sm leading-relaxed text-slate-400">
+                Your trusted partner for travel ticketing, government documents, online forms, printing,
+                financial services, and international parcels in Firozepur, Punjab.
+              </p>
             </div>
-            <p className="text-sm leading-relaxed mb-6">
-              Your trusted partner for travel ticketing, government documents, online forms, printing, financial services, and international parcels in Firozepur, Punjab.
-            </p>
-          </div>
-          <div>
-            <h3 className="font-bold text-white mb-6 uppercase tracking-wider text-sm">Quick Links</h3>
-            <ul className="space-y-3">
-              {navItems.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className="text-sm hover:text-white transition-colors">
-                    {item.label}
-                  </Link>
+
+            {/* Quick Links */}
+            <div>
+              <h3
+                className="font-bold mb-5 uppercase tracking-widest text-xs pb-3"
+                style={{ color: GOLD_LIGHT, borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+              >
+                Quick Links
+              </h3>
+              <ul className="space-y-3">
+                {navItems.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="text-sm text-slate-400 hover:text-white transition-colors flex items-center gap-2.5 group"
+                    >
+                      <span
+                        className="rounded-full flex-shrink-0 transition-all duration-200 group-hover:w-3"
+                        style={{ width: "5px", height: "5px", background: GOLD, display: "inline-block" }}
+                      />
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h3
+                className="font-bold mb-5 uppercase tracking-widest text-xs pb-3"
+                style={{ color: GOLD_LIGHT, borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+              >
+                Contact Information
+              </h3>
+              <ul className="space-y-4 text-sm">
+                <li className="flex items-start gap-3">
+                  <FaBuilding className="mt-1 flex-shrink-0" style={{ color: GOLD }} />
+                  <span className="text-slate-400 leading-relaxed">
+                    Apna Enterprise, Dharamkot Road Jogewala,<br />
+                    Firozepur, Punjab – 142044
+                  </span>
                 </li>
-              ))}
-            </ul>
+                <li className="flex items-center gap-3">
+                  <FaPhone className="flex-shrink-0" style={{ color: GOLD }} />
+                  <a href="tel:+918437566186" className="text-slate-400 hover:text-white transition-colors">
+                    +91 84375 66186
+                  </a>
+                </li>
+                <li className="flex items-center gap-3">
+                  <FaWhatsapp className="text-lg flex-shrink-0 text-[#25D366]" />
+                  <span className="text-slate-400">+91 84375 66186</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <FaEnvelope className="flex-shrink-0" style={{ color: GOLD }} />
+                  <a href="mailto:info@apnaenterprise.in" className="text-slate-400 hover:text-white transition-colors">
+                    info@apnaenterprise.in
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div>
-            <h3 className="font-bold text-white mb-6 uppercase tracking-wider text-sm">Contact Information</h3>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-3">
-                <FaBuilding className="mt-1 text-primary flex-shrink-0" />
-                <span>Apna Enterprise, Dharamkot Road Jogewala,<br />Firozepur, Punjab – 142044</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <FaWhatsapp className="text-primary text-lg flex-shrink-0" />
-                <span>+91 84375 66186</span>
-              </li>
-            </ul>
+
+          {/* Bottom bar */}
+          <div
+            className="pt-6 flex flex-col md:flex-row items-center justify-between gap-4"
+            style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
+          >
+            <p className="text-xs text-slate-500">
+              &copy; {new Date().getFullYear()} Apna Enterprise. All rights reserved. | apnaenterprise.in
+            </p>
+            <VisitorCounter />
           </div>
-        </div>
-        <div className="container mx-auto px-4 lg:px-8 mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between">
-          <p className="text-xs">&copy; {new Date().getFullYear()} Apna Enterprise. All rights reserved. | apnaenterprise.in</p>
-          <VisitorCounter />
         </div>
       </footer>
 
@@ -98,7 +214,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         href="https://wa.me/918437566186?text=Hello%20Apna%20Enterprise%2C%20I%20want%20to%20enquire"
         target="_blank"
         rel="noreferrer"
-        className="fixed bottom-6 right-6 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:shadow-xl hover:bg-[#20bd5a] transition-all z-50 flex items-center justify-center transform hover:scale-105"
+        className="fixed bottom-6 right-6 text-white p-4 rounded-full z-50 flex items-center justify-center transform hover:scale-110 transition-all duration-200"
+        style={{
+          background: "#25D366",
+          boxShadow: "0 4px 20px rgba(37, 211, 102, 0.45)",
+        }}
         aria-label="Contact on WhatsApp"
       >
         <FaWhatsapp className="text-3xl" />
@@ -110,9 +230,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 function VisitorCounter() {
   const { data } = useGetVisitorCount();
   return (
-    <div className="flex items-center gap-2 text-xs bg-slate-800 px-3 py-1.5 rounded text-slate-300 mt-4 md:mt-0">
-      <span className="uppercase tracking-wider font-semibold text-slate-400">Visitors:</span>
-      <span className="font-mono bg-slate-900 px-2 py-0.5 rounded border border-slate-700">{data?.count ?? "..."}</span>
+    <div
+      className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-lg"
+      style={{ border: "1px solid rgba(255,255,255,0.08)", color: "#94a3b8" }}
+    >
+      <span className="uppercase tracking-wider font-semibold">Visitors:</span>
+      <span
+        className="font-mono px-2 py-0.5 rounded"
+        style={{ background: "rgba(212, 160, 23, 0.12)", color: GOLD_LIGHT }}
+      >
+        {data?.count ?? "..."}
+      </span>
     </div>
   );
 }
