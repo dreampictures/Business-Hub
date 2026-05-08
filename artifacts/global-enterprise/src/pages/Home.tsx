@@ -3,6 +3,7 @@ import {
   FaPlane, FaIdCard, FaClipboardList, FaPrint,
   FaUniversity, FaShippingFast,
   FaArrowRight, FaCheckCircle, FaUsers, FaClock, FaHeadset, FaStar,
+  FaMapMarkerAlt, FaExternalLinkAlt,
 } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { SERVICE_CATEGORIES } from "@/lib/services";
@@ -160,6 +161,50 @@ export default function Home() {
                   <span className="text-xs font-semibold uppercase tracking-wider opacity-80">{label}</span>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── GOOGLE RATING ── */}
+      <section className="py-16" style={{ background: "#f8fafd" }}>
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="card-premium p-6 md:p-8">
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                <div className="flex items-start gap-4">
+                  <div
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 text-white"
+                    style={{ background: "linear-gradient(135deg, #071B4A, #12307a)" }}
+                  >
+                    <FaMapMarkerAlt className="text-xl" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: GOLD }}>
+                      Google Maps Rating
+                    </p>
+                    <h3 className="text-2xl font-extrabold text-slate-900">Dream Pictures</h3>
+                    <p className="text-slate-500 mt-1">See our business rating on Google Maps.</p>
+                    <div className="flex items-center gap-2 mt-3 text-sm font-semibold text-slate-700">
+                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-100 text-amber-700">
+                        <FaStar className="text-xs" /> 4.8
+                      </span>
+                      <span>•</span>
+                      <span>120+ reviews</span>
+                    </div>
+                  </div>
+                </div>
+
+                <a
+                  href="https://maps.app.goo.gl/dxLTVCkfZc5xULbA9"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2 btn-gold px-6 py-3 rounded-xl font-bold"
+                >
+                  Open Google Maps
+                  <FaExternalLinkAlt className="text-sm" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
