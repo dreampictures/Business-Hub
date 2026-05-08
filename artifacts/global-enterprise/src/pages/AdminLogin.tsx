@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import Seo from "@/components/Seo";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useLocation } from "wouter";
@@ -54,6 +55,7 @@ export default function AdminLogin() {
       className="min-h-screen flex items-center justify-center py-12 px-4"
       style={{ background: "linear-gradient(135deg, #050D24 0%, #071B4A 60%, #0d2069 100%)" }}
     >
+      <Seo title="Admin Login" description="Apna Enterprise admin login." noindex={true} />
       {/* Background radial glow */}
       <div
         style={{

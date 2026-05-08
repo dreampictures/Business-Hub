@@ -1,10 +1,17 @@
 import { Link } from "wouter";
 import { FaHome, FaArrowRight, FaExclamationTriangle } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
+import Seo from "@/components/Seo";
 
 export default function NotFound() {
   return (
     <div className="flex flex-col min-h-full">
+      <Seo
+        title="Page Not Found"
+        description="The page you're looking for doesn't exist. Head back to Apna Enterprise's homepage or explore our services."
+        path="/404"
+        noindex={true}
+      />
       <section className="hero-navy text-white py-16 flex-shrink-0">
         <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">
           <p className="font-semibold uppercase tracking-widest text-xs mb-3" style={{ color: "#F2C14E" }}>

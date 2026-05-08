@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Seo from "@/components/Seo";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -117,6 +118,12 @@ export default function Apply() {
 
   return (
     <div className="flex flex-col min-h-full">
+      <Seo
+        title="Apply for a Service — Quick & Easy Application"
+        description="Apply online for any service at Apna Enterprise Firozepur. Fill in your details, choose your service, and we'll get back to you on WhatsApp promptly."
+        keywords="apply service Firozepur, online application Apna Enterprise, service request Punjab, PAN card apply online, Aadhaar apply Firozepur"
+        path="/apply"
+      />
       {/* ── Header ── */}
       <section className="hero-navy text-white py-16">
         <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">

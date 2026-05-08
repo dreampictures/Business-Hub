@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import Seo from "@/components/Seo";
 import { useLocation } from "wouter";
 import {
   useGetDashboardStats,
@@ -141,6 +142,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <Seo title="Admin Dashboard" description="Apna Enterprise admin dashboard." noindex={true} />
       {/* Admin Header */}
       <header className="bg-primary text-primary-foreground shadow-md">
         <div className="container mx-auto px-4 lg:px-8">

@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "wouter";
+import Seo from "@/components/Seo";
 import {
   FaPlane, FaTrain, FaIdCard, FaFingerprint, FaAddressCard, FaPassport,
   FaCar, FaIdBadge, FaFileAlt, FaUserFriends, FaHome, FaMoneyBill,
@@ -99,6 +100,12 @@ export default function Services() {
 
   return (
     <div className="flex flex-col min-h-full">
+      <Seo
+        title="Our Services — Travel, Documents, Finance & More"
+        description="Browse 50+ services at Apna Enterprise Firozepur — air & train tickets, PAN card, Aadhaar, passport, voter ID, printing, financial services, international parcels and more."
+        keywords="services Firozepur, air ticket booking, train ticket, PAN card, Aadhaar update, passport apply, printing services, money transfer, international parcel Firozepur"
+        path="/services"
+      />
       {/* ── Page Header ── */}
       <section className="hero-navy text-white py-16">
         <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">

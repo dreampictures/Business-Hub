@@ -3,10 +3,10 @@ import {
   FaPlane, FaIdCard, FaClipboardList, FaPrint,
   FaUniversity, FaShippingFast,
   FaArrowRight, FaCheckCircle, FaUsers, FaClock, FaHeadset, FaStar,
-
 } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { SERVICE_CATEGORIES } from "@/lib/services";
+import Seo from "@/components/Seo";
 
 const GOLD = "#D4A017";
 const GOLD_LIGHT = "#F2C14E";
@@ -44,6 +44,12 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-full">
+      <Seo
+        title="Professional Services in Firozepur, Punjab"
+        description="Apna Enterprise — Firozepur's trusted multi-service centre for travel ticketing, PAN card, Aadhaar, passport, government forms, printing, finance & international parcels."
+        keywords="Apna Enterprise, Firozepur services, PAN card apply, Aadhaar services, passport apply, train ticket booking, air ticket booking, government forms, printing Firozepur, financial services Punjab"
+        path="/"
+      />
 
       {/* ── HERO ── */}
       <section className="hero-navy text-white py-24 lg:py-36">

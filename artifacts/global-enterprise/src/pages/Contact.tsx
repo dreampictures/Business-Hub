@@ -1,4 +1,5 @@
 import { FaPhone, FaWhatsapp, FaMapMarkerAlt, FaClock, FaEnvelope } from "react-icons/fa";
+import Seo from "@/components/Seo";
 
 const GOLD = "#D4A017";
 const GOLD_LIGHT = "#F2C14E";
@@ -6,6 +7,12 @@ const GOLD_LIGHT = "#F2C14E";
 export default function Contact() {
   return (
     <div className="flex flex-col min-h-full">
+      <Seo
+        title="Contact Us — Reach Apna Enterprise in Firozepur"
+        description="Get in touch with Apna Enterprise, Firozepur. Call, WhatsApp, or visit us Monday to Saturday. We're here to help with all your service needs."
+        keywords="contact Apna Enterprise, Firozepur service centre address, phone number Apna Enterprise, WhatsApp Apna Enterprise"
+        path="/contact"
+      />
       {/* ── Header ── */}
       <section className="hero-navy text-white py-16">
         <div className="container mx-auto px-4 lg:px-8 relative z-10 text-center">
