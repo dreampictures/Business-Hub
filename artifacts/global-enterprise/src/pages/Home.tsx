@@ -3,14 +3,13 @@ import {
   FaPlane, FaIdCard, FaClipboardList, FaPrint,
   FaUniversity, FaShippingFast,
   FaArrowRight, FaCheckCircle, FaUsers, FaClock, FaHeadset, FaStar,
-  FaQuoteLeft, FaExternalLinkAlt, FaGoogle,
+
 } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { SERVICE_CATEGORIES } from "@/lib/services";
 
 const GOLD = "#D4A017";
 const GOLD_LIGHT = "#F2C14E";
-const MAPS_LINK = "https://maps.app.goo.gl/dxLTVCkfZc5xULbA9";
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
   travel: FaPlane,
@@ -39,68 +38,6 @@ const CATEGORY_TAG: Record<string, string> = {
   parcel:    "bg-cyan-100 text-cyan-700",
 };
 
-const REVIEWS = [
-  {
-    name: "Rajinder Singh",
-    initials: "RS",
-    color: "#1e40af",
-    stars: 5,
-    time: "2 weeks ago",
-    text: "Very professional service. Got my PAN card done within 2 days. Staff is helpful and the process was completely transparent. Highly recommend Apna Enterprise to everyone in Firozepur.",
-  },
-  {
-    name: "Sunita Devi",
-    initials: "SD",
-    color: "#065f46",
-    stars: 5,
-    time: "1 month ago",
-    text: "Booked air tickets for my family at a great price. The team was very helpful and explained every detail. Will definitely come back for future travel needs. Excellent service!",
-  },
-  {
-    name: "Harpreet Kaur",
-    initials: "HK",
-    color: "#5b21b6",
-    stars: 5,
-    time: "3 weeks ago",
-    text: "Got my Aadhaar update and voter card done here. Very fast service and no hidden charges at all. The staff is friendly and knowledgeable. Best service centre in Firozepur.",
-  },
-  {
-    name: "Gurjant Singh",
-    initials: "GS",
-    color: "#9f1239",
-    stars: 5,
-    time: "1 month ago",
-    text: "Sent an international parcel to Canada through Apna Enterprise. Excellent packaging and tracking provided. Very reasonable rates compared to other places. 5 stars without doubt!",
-  },
-];
-
-function StarRow({ count, filled }: { count: number; filled: boolean }) {
-  return (
-    <div className="flex items-center gap-1.5">
-      {[...Array(5)].map((_, i) => (
-        <FaStar
-          key={i}
-          className="text-sm"
-          style={{ color: i < count ? "#F5C518" : "#e2e8f0" }}
-        />
-      ))}
-    </div>
-  );
-}
-
-function Stars({ rating }: { rating: number }) {
-  return (
-    <div className="flex items-center gap-1">
-      {[...Array(5)].map((_, i) => (
-        <FaStar
-          key={i}
-          className="text-base"
-          style={{ color: i < Math.floor(rating) ? "#F5C518" : i < rating ? "#F5C518" : "#e2e8f0" }}
-        />
-      ))}
-    </div>
-  );
-}
 
 export default function Home() {
   const totalServices = SERVICE_CATEGORIES.reduce((acc, c) => acc + c.services.length, 0);
@@ -221,175 +158,6 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── GOOGLE REVIEWS ── */}
-      <section className="py-20" style={{ background: "#f0f4fa" }}>
-        <div className="container mx-auto px-4 lg:px-8">
-
-          {/* Section header */}
-          <div className="text-center mb-14">
-            <p className="font-semibold uppercase tracking-widest text-sm mb-2" style={{ color: GOLD }}>
-              Customer Reviews
-            </p>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3">
-              What Our Customers Say
-            </h2>
-            <p className="text-slate-500 max-w-lg mx-auto">
-              Trusted by thousands in Firozepur. See what people are saying on Google Maps.
-            </p>
-            <div className="gold-line w-24 mx-auto mt-4" />
-          </div>
-
-          {/* Rating summary card */}
-          <div
-            className="max-w-4xl mx-auto rounded-3xl overflow-hidden mb-12"
-            style={{
-              background: "linear-gradient(135deg, #071B4A 0%, #0d2069 100%)",
-              boxShadow: "0 20px 60px rgba(7,27,74,0.25), 0 0 0 1px rgba(212,160,23,0.2)",
-            }}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              {/* Left: big score */}
-              <div className="flex flex-col items-center justify-center py-12 px-8 text-white" style={{ borderRight: "1px solid rgba(255,255,255,0.08)" }}>
-                {/* Google logo row */}
-                <div className="flex items-center gap-2 mb-6">
-                  <FaGoogle className="text-2xl" style={{ color: "#F5C518" }} />
-                  <span className="text-white/70 font-semibold text-sm uppercase tracking-widest">Google Maps</span>
-                </div>
-                <div
-                  className="text-8xl font-extrabold leading-none mb-3"
-                  style={{ color: "#F5C518", textShadow: "0 0 40px rgba(245,197,24,0.4)" }}
-                >
-                  4.8
-                </div>
-                <div className="flex items-center gap-1.5 mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <FaStar key={i} className="text-xl" style={{ color: i < 5 ? "#F5C518" : "#e2e8f0" }} />
-                  ))}
-                </div>
-                <p className="text-white/60 text-sm font-medium">Based on 120+ reviews</p>
-                <a
-                  href={MAPS_LINK}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-6 inline-flex items-center gap-2 btn-gold px-6 py-2.5 rounded-xl text-sm font-bold"
-                >
-                  View on Google Maps
-                  <FaExternalLinkAlt className="text-xs" />
-                </a>
-              </div>
-
-              {/* Right: star breakdown */}
-              <div className="flex flex-col justify-center py-12 px-8">
-                <p className="text-white/60 text-xs font-semibold uppercase tracking-widest mb-6">
-                  Rating Breakdown
-                </p>
-                {[
-                  { stars: 5, pct: 85 },
-                  { stars: 4, pct: 10 },
-                  { stars: 3, pct: 3 },
-                  { stars: 2, pct: 1 },
-                  { stars: 1, pct: 1 },
-                ].map(({ stars, pct }) => (
-                  <div key={stars} className="flex items-center gap-3 mb-3">
-                    <span className="text-white/60 text-xs font-semibold w-4 text-right">{stars}</span>
-                    <FaStar className="text-xs flex-shrink-0" style={{ color: "#F5C518" }} />
-                    <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
-                      <div
-                        className="h-full rounded-full transition-all"
-                        style={{
-                          width: `${pct}%`,
-                          background: stars >= 4
-                            ? "linear-gradient(90deg, #C8920A, #F5C518)"
-                            : stars === 3
-                            ? "#94a3b8"
-                            : "#ef4444",
-                        }}
-                      />
-                    </div>
-                    <span className="text-white/50 text-xs w-8 text-right">{pct}%</span>
-                  </div>
-                ))}
-
-                <a
-                  href={MAPS_LINK}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold transition-colors"
-                  style={{ color: GOLD_LIGHT }}
-                >
-                  Write a Review
-                  <FaExternalLinkAlt className="text-xs" />
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Review cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {REVIEWS.map((review) => (
-              <div
-                key={review.name}
-                className="bg-white rounded-2xl p-6 flex flex-col gap-4"
-                style={{
-                  boxShadow: "0 4px 24px rgba(7,27,74,0.08)",
-                  border: "1px solid #e8edf5",
-                }}
-              >
-                {/* Header */}
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-11 h-11 rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
-                    style={{ background: review.color }}
-                  >
-                    {review.initials}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-slate-900 text-sm">{review.name}</p>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <div className="flex items-center gap-0.5">
-                        {[...Array(5)].map((_, i) => (
-                          <FaStar key={i} className="text-xs" style={{ color: "#F5C518" }} />
-                        ))}
-                      </div>
-                      <span className="text-xs text-slate-400">{review.time}</span>
-                    </div>
-                  </div>
-                  {/* Google icon */}
-                  <FaGoogle className="text-lg flex-shrink-0" style={{ color: "#4285F4" }} />
-                </div>
-
-                {/* Quote */}
-                <div className="relative">
-                  <FaQuoteLeft className="absolute -top-1 -left-1 text-lg opacity-10" style={{ color: GOLD }} />
-                  <p className="text-slate-600 text-sm leading-relaxed pl-4">
-                    {review.text}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Bottom CTA */}
-          <div className="text-center mt-10">
-            <a
-              href={MAPS_LINK}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 font-semibold text-sm px-8 py-3 rounded-xl border-2 transition-all hover:shadow-md"
-              style={{
-                borderColor: GOLD,
-                color: GOLD,
-                background: "rgba(212,160,23,0.04)",
-              }}
-            >
-              <FaGoogle />
-              Read All Reviews on Google Maps
-              <FaExternalLinkAlt className="text-xs" />
-            </a>
           </div>
         </div>
       </section>
