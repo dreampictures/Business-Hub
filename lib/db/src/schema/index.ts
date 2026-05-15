@@ -18,6 +18,7 @@ export const applicationsTable = pgTable("applications", {
   phone: text("phone").notNull(),
   service: text("service").notNull(),
   message: text("message"),
+  status: text("status").default("pending").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

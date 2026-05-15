@@ -17,8 +17,11 @@ export async function ensureSchema() {
         phone TEXT NOT NULL,
         service TEXT NOT NULL,
         message TEXT,
+        status TEXT NOT NULL DEFAULT 'pending',
         created_at TIMESTAMP DEFAULT NOW() NOT NULL
       );
+
+      ALTER TABLE applications ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'pending';
 
       CREATE TABLE IF NOT EXISTS visitors (
         id SERIAL PRIMARY KEY,

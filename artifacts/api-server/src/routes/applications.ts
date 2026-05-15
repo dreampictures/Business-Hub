@@ -66,6 +66,7 @@ router.get("/applications", requireAuth, async (req, res) => {
         phone: a.phone,
         service: a.service,
         message: a.message,
+        status: a.status,
         createdAt: a.createdAt.toISOString(),
       })),
       total,
@@ -73,6 +74,29 @@ router.get("/applications", requireAuth, async (req, res) => {
   } catch (err) {
     req.log.error({ err }, "Failed to list applications");
     res.status(500).json({ error: "Failed to fetch applications" });
+  }
+});
+
+// PATCH /applications/:id/status - Update application status (admin only)
+router.patch("/applications/:id/status", requireAuth, async (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid application ID" });
+    return;
+  }
+
+  const { status } = req.body as { status?: string };
+  if (!status || !["pending", "done"].includes(status)) {
+    res.status(400).json({ error: "Status must be 'pending' or 'done'" });
+    return;
+  }
+
+  try {
+    await db.update(applicationsTable).set({ status }).where(eq(applicationsTable.id, id));
+    res.json({ success: true, status });
+  } catch (err) {
+    req.log.error({ err }, "Failed to update application status");
+    res.status(500).json({ error: "Failed to update status" });
   }
 });
 

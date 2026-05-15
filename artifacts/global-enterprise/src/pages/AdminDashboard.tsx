@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import Seo from "@/components/Seo";
 import { useLocation } from "wouter";
 import {
@@ -18,6 +18,7 @@ import {
   FaSignOutAlt, FaFileDownload, FaUsers, FaClipboardList,
   FaFilter, FaBuilding, FaEye, FaTag, FaWhatsapp,
   FaMobileAlt, FaDesktop, FaChartBar, FaPhoneAlt, FaBullhorn,
+  FaCheck, FaHourglassHalf,
 } from "react-icons/fa";
 import { SERVICE_CATEGORIES, SERVICE_TO_CATEGORY, ALL_SERVICE_IDS } from "@/lib/services";
 import AdminAnnouncements from "./AdminAnnouncements";
@@ -90,6 +91,27 @@ export default function AdminDashboard() {
     }
   }, [setLocation, token]);
 
+  // Auto-logout after 1 hour of inactivity
+  const inactivityTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    const INACTIVITY_MS = 60 * 60 * 1000;
+    const reset = () => {
+      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
+      inactivityTimer.current = setTimeout(() => {
+        localStorage.removeItem("adminToken");
+        localStorage.removeItem("adminUsername");
+        setLocation("/admin/login");
+      }, INACTIVITY_MS);
+    };
+    const events = ["mousemove", "keydown", "click", "touchstart", "scroll"] as const;
+    events.forEach((e) => window.addEventListener(e, reset, { passive: true }));
+    reset();
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, reset));
+      if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
+    };
+  }, [setLocation]);
+
   const { data: stats, isLoading: statsLoading } = useGetDashboardStats({
     query: { queryKey: getGetDashboardStatsQueryKey() },
   });
@@ -114,6 +136,31 @@ export default function AdminDashboard() {
       (app) => SERVICE_TO_CATEGORY[app.service] === categoryFilter
     );
   }, [applicationsData, categoryFilter]);
+
+  const [appStatuses, setAppStatuses] = useState<Record<number, "pending" | "done">>({});
+  useEffect(() => {
+    if (!applicationsData?.applications) return;
+    setAppStatuses((prev) => {
+      const next = { ...prev };
+      for (const a of applicationsData.applications) {
+        if (!(a.id in next)) next[a.id] = ((a as any).status ?? "pending") as "pending" | "done";
+      }
+      return next;
+    });
+  }, [applicationsData]);
+
+  const updateStatus = useCallback(async (id: number, newStatus: "pending" | "done") => {
+    setAppStatuses((prev) => ({ ...prev, [id]: newStatus }));
+    try {
+      await fetch(`/api/applications/${id}/status`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ status: newStatus }),
+      });
+    } catch {
+      setAppStatuses((prev) => ({ ...prev, [id]: newStatus === "done" ? "pending" : "done" }));
+    }
+  }, [token]);
 
   async function handleExport() {
     const result = await fetchCsv();
@@ -364,6 +411,7 @@ export default function AdminDashboard() {
                         <th className="text-left py-3 px-6 font-semibold text-slate-600 uppercase tracking-wider text-xs">Service</th>
                         <th className="text-left py-3 px-6 font-semibold text-slate-600 uppercase tracking-wider text-xs hidden md:table-cell">Message</th>
                         <th className="text-left py-3 px-6 font-semibold text-slate-600 uppercase tracking-wider text-xs hidden lg:table-cell">Date</th>
+                        <th className="text-left py-3 px-6 font-semibold text-slate-600 uppercase tracking-wider text-xs">Status</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-50">
@@ -391,6 +439,28 @@ export default function AdminDashboard() {
                               {new Date(app.createdAt).toLocaleDateString("en-IN", {
                                 day: "numeric", month: "short", year: "numeric",
                               })}
+                            </td>
+                            <td className="py-4 px-6 whitespace-nowrap">
+                              {(() => {
+                                const st = appStatuses[app.id] ?? "pending";
+                                const isDone = st === "done";
+                                return (
+                                  <button
+                                    onClick={() => updateStatus(app.id, isDone ? "pending" : "done")}
+                                    title={isDone ? "Mark as Pending" : "Mark as Done"}
+                                    className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border-2 transition-all duration-150 hover:opacity-80"
+                                    style={
+                                      isDone
+                                        ? { background: "#dcfce7", color: "#15803d", borderColor: "#86efac" }
+                                        : { background: "#fef3c7", color: "#92400e", borderColor: "#fcd34d" }
+                                    }
+                                  >
+                                    {isDone
+                                      ? <><FaCheck className="text-xs" /> Done</>
+                                      : <><FaHourglassHalf className="text-xs" /> Pending</>}
+                                  </button>
+                                );
+                              })()}
                             </td>
                           </tr>
                         );

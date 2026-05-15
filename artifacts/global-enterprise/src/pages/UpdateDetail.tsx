@@ -75,6 +75,34 @@ function highlightValue(val: string) {
   return <>{val}</>;
 }
 
+const URL_REGEX = /https?:\/\/[^\s)"'>]+/g;
+
+function linkify(text: string): React.ReactNode {
+  const parts: React.ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  URL_REGEX.lastIndex = 0;
+  while ((m = URL_REGEX.exec(text)) !== null) {
+    if (m.index > last) parts.push(text.slice(last, m.index));
+    const url = m[0];
+    parts.push(
+      <a
+        key={m.index}
+        href={url}
+        target="_blank"
+        rel="noreferrer"
+        className="underline break-all hover:opacity-80"
+        style={{ color: "#1d4ed8" }}
+      >
+        {url}
+      </a>
+    );
+    last = m.index + url.length;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return parts.length ? <>{parts}</> : <>{text}</>;
+}
+
 function renderTextContent(content: string) {
   const lines = content.split("\n");
   const items: React.ReactNode[] = [];
@@ -85,12 +113,15 @@ function renderTextContent(content: string) {
     if (match) {
       const label = match[1].trim();
       const value = match[2].trim();
+      const isUrl = /^https?:\/\//.test(value);
       items.push(
         <li key={items.length} className="flex items-start gap-2">
           <span className="mt-1.5 w-2 h-2 rounded-full flex-shrink-0" style={{ background: NAVY }} />
           <span>
             <span className="font-bold text-slate-800">{label}:</span>{" "}
-            <span className="text-slate-700">{highlightValue(value)}</span>
+            <span className="text-slate-700">
+              {isUrl ? linkify(value) : highlightValue(value)}
+            </span>
           </span>
         </li>
       );
@@ -99,7 +130,7 @@ function renderTextContent(content: string) {
       items.push(
         <li key={items.length} className="flex items-start gap-2">
           <span className="mt-1.5 w-2 h-2 rounded-full flex-shrink-0" style={{ background: NAVY }} />
-          <span className="text-slate-700">{stripped}</span>
+          <span className="text-slate-700">{linkify(stripped)}</span>
         </li>
       );
     }
