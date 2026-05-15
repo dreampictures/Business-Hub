@@ -11,6 +11,7 @@ const GOLD = "#D4A017";
 const CATEGORIES = ["Government Job", "Admit Card", "Result", "Govt Scheme", "Govt Notice", "Announcement", "Offer / Update"];
 
 type SectionType = "text" | "table" | "links";
+interface CellData { value: string; url: string }
 interface LinkItem { label: string; url: string; tag: string }
 interface Section {
   id: string;
@@ -18,7 +19,7 @@ interface Section {
   title: string;
   content: string;
   columns: string[];
-  rows: string[][];
+  rows: CellData[][];
   links: LinkItem[];
 }
 interface Ann {
@@ -51,6 +52,24 @@ function dateVal(d?: string) {
   if (!d) return "";
   return new Date(d).toISOString().slice(0, 10);
 }
+function emptyCell(): CellData { return { value: "", url: "" }; }
+function normalizeCell(cell: unknown): CellData {
+  if (typeof cell === "string") return { value: cell, url: "" };
+  if (cell && typeof cell === "object" && "value" in cell) {
+    const c = cell as { value?: string; url?: string };
+    return { value: c.value || "", url: c.url || "" };
+  }
+  return emptyCell();
+}
+function normalizeSections(raw: Section[]): Section[] {
+  return (raw || []).map((s) => ({
+    ...s,
+    rows: (s.rows || []).map((row) =>
+      (row as unknown[]).map((cell) => normalizeCell(cell))
+    ),
+    links: s.links || [],
+  }));
+}
 function emptyForm(): Omit<Ann, "id" | "isExpired" | "createdAt"> {
   return {
     title: "", slug: "", shortDesc: "", category: "Government Job", department: "",
@@ -70,6 +89,7 @@ export default function AdminAnnouncements({ token }: { token: string | null }) 
   const [editId, setEditId] = useState<number | null>(null);
   const [form, setForm] = useState(emptyForm());
   const [error, setError] = useState("");
+  const [expandedCells, setExpandedCells] = useState<Set<string>>(new Set());
 
   const authHeaders = { "Content-Type": "application/json", Authorization: `Bearer ${token}` };
 
@@ -88,6 +108,7 @@ export default function AdminAnnouncements({ token }: { token: string | null }) 
     setForm(emptyForm());
     setEditId(null);
     setError("");
+    setExpandedCells(new Set());
     setView("form");
   }
   function openEdit(a: Ann) {
@@ -98,10 +119,11 @@ export default function AdminAnnouncements({ token }: { token: string | null }) 
       vacancyCount: a.vacancyCount, officialWebsite: a.officialWebsite || "",
       officialNotificationUrl: a.officialNotificationUrl || "", applyUrl: a.applyUrl || "",
       isPublished: a.isPublished, isUrgent: a.isUrgent, isFeatured: a.isFeatured,
-      sections: a.sections || [],
+      sections: normalizeSections(a.sections || []),
     });
     setEditId(a.id);
     setError("");
+    setExpandedCells(new Set());
     setView("form");
   }
 
@@ -152,7 +174,12 @@ export default function AdminAnnouncements({ token }: { token: string | null }) 
 
   // Section helpers
   function addSection(type: SectionType) {
-    const s: Section = { id: uid(), type, title: "", content: "", columns: ["Column 1", "Column 2"], rows: [["", ""]], links: [{ label: "", url: "", tag: "default" }] };
+    const s: Section = {
+      id: uid(), type, title: "", content: "",
+      columns: ["Column 1", "Column 2"],
+      rows: [[emptyCell(), emptyCell()]],
+      links: [{ label: "", url: "", tag: "default" }],
+    };
     setForm((p) => ({ ...p, sections: [...p.sections, s] }));
   }
   function updateSection(id: string, patch: Partial<Section>) {
@@ -175,7 +202,7 @@ export default function AdminAnnouncements({ token }: { token: string | null }) 
     setForm((p) => ({
       ...p, sections: p.sections.map((s) => {
         if (s.id !== secId) return s;
-        return { ...s, columns: [...s.columns, `Column ${s.columns.length + 1}`], rows: s.rows.map((r) => [...r, ""]) };
+        return { ...s, columns: [...s.columns, `Column ${s.columns.length + 1}`], rows: s.rows.map((r) => [...r, emptyCell()]) };
       }),
     }));
   }
@@ -183,7 +210,7 @@ export default function AdminAnnouncements({ token }: { token: string | null }) 
     setForm((p) => ({
       ...p, sections: p.sections.map((s) => {
         if (s.id !== secId) return s;
-        return { ...s, rows: [...s.rows, s.columns.map(() => "")] };
+        return { ...s, rows: [...s.rows, s.columns.map(() => emptyCell())] };
       }),
     }));
   }
@@ -194,6 +221,24 @@ export default function AdminAnnouncements({ token }: { token: string | null }) 
         return { ...s, rows: s.rows.filter((_, i) => i !== ri) };
       }),
     }));
+  }
+  function updateCell(secId: string, ri: number, ci: number, patch: Partial<CellData>) {
+    setForm((p) => ({
+      ...p, sections: p.sections.map((s) => {
+        if (s.id !== secId) return s;
+        const rows = s.rows.map((row, rIdx) =>
+          rIdx === ri ? row.map((cell, cIdx) => cIdx === ci ? { ...cell, ...patch } : cell) : row
+        );
+        return { ...s, rows };
+      }),
+    }));
+  }
+  function toggleCellExpand(key: string) {
+    setExpandedCells((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key); else next.add(key);
+      return next;
+    });
   }
   function addLink(secId: string) {
     setForm((p) => ({
@@ -452,7 +497,7 @@ export default function AdminAnnouncements({ token }: { token: string | null }) 
                 {/* Section Header */}
                 <div className="flex items-center gap-2 px-4 py-3 bg-slate-50 border-b border-slate-200">
                   <span className="text-xs font-bold uppercase text-slate-500 bg-slate-200 px-2 py-0.5 rounded">
-                    {sec.type === "text" ? "📝 Text" : sec.type === "table" ? "📊 Table" : "🔗 Links"}
+                    {sec.type === "text" ? "📝 TEXT" : sec.type === "table" ? "📊 TABLE" : "🔗 LINKS"}
                   </span>
                   <Input
                     className="flex-1 h-8 text-sm border-slate-200"
@@ -466,26 +511,34 @@ export default function AdminAnnouncements({ token }: { token: string | null }) 
                 </div>
 
                 <div className="p-4">
-                  {/* Text Section */}
+                  {/* ── Text Section ── */}
                   {sec.type === "text" && (
-                    <textarea
-                      className="w-full rounded-lg text-sm border border-slate-200 px-3 py-2 resize-none"
-                      rows={5}
-                      value={sec.content}
-                      onChange={(e) => updateSection(sec.id, { content: e.target.value })}
-                      placeholder="Enter content here..."
-                    />
+                    <div>
+                      <p className="text-xs text-slate-400 mb-2">
+                        Tip: Enter one item per line. Use <code className="bg-slate-100 px-1 rounded">Label: Value</code> format for auto bullet formatting.
+                      </p>
+                      <textarea
+                        className="w-full rounded-lg text-sm border border-slate-200 px-3 py-2 resize-none font-mono"
+                        rows={6}
+                        value={sec.content}
+                        onChange={(e) => updateSection(sec.id, { content: e.target.value })}
+                        placeholder={"Release Date: 15 May 2026\nExam Date: 01 June 2026\nDownload Status: Activated\nOfficial Website: example.nic.in"}
+                      />
+                    </div>
                   )}
 
-                  {/* Table Section */}
+                  {/* ── Table Section ── */}
                   {sec.type === "table" && (
                     <div className="space-y-3">
+                      <p className="text-xs text-slate-400">
+                        Tip: Add an optional <strong>Link URL</strong> to any cell — click the 🔗 icon to expand.
+                      </p>
                       <div className="overflow-x-auto">
-                        <table className="w-full text-sm border border-slate-200 rounded-lg overflow-hidden">
+                        <table className="w-full text-sm border border-slate-200 rounded-lg overflow-hidden" style={{ borderCollapse: "collapse" }}>
                           <thead>
                             <tr className="bg-slate-50">
                               {sec.columns.map((col, ci) => (
-                                <th key={ci} className="border-b border-slate-200 p-2">
+                                <th key={ci} className="border border-slate-200 p-2">
                                   <Input
                                     className="h-7 text-xs"
                                     value={col}
@@ -496,26 +549,48 @@ export default function AdminAnnouncements({ token }: { token: string | null }) 
                                   />
                                 </th>
                               ))}
-                              <th className="border-b border-slate-200 p-1 w-8"></th>
+                              <th className="border border-slate-200 p-1 w-8"></th>
                             </tr>
                           </thead>
                           <tbody>
                             {sec.rows.map((row, ri) => (
                               <tr key={ri} className="border-b border-slate-100">
-                                {row.map((cell, ci) => (
-                                  <td key={ci} className="p-1">
-                                    <Input
-                                      className="h-7 text-xs"
-                                      value={cell}
-                                      onChange={(e) => {
-                                        const rows = sec.rows.map((r, rIdx) => rIdx === ri ? r.map((c, cIdx) => cIdx === ci ? e.target.value : c) : r);
-                                        updateSection(sec.id, { rows });
-                                      }}
-                                    />
-                                  </td>
-                                ))}
-                                <td className="p-1">
-                                  <button onClick={() => removeTableRow(sec.id, ri)} className="p-1 text-red-400 hover:text-red-600">
+                                {row.map((cell, ci) => {
+                                  const cellKey = `${sec.id}-${ri}-${ci}`;
+                                  const expanded = expandedCells.has(cellKey);
+                                  return (
+                                    <td key={ci} className="border border-slate-100 p-1 align-top">
+                                      <div className="flex items-start gap-1">
+                                        <div className="flex-1">
+                                          <Input
+                                            className="h-7 text-xs w-full"
+                                            value={cell.value}
+                                            onChange={(e) => updateCell(sec.id, ri, ci, { value: e.target.value })}
+                                            placeholder="Enter value..."
+                                          />
+                                          {expanded && (
+                                            <Input
+                                              className="h-7 text-xs w-full mt-1 border-blue-300 bg-blue-50"
+                                              value={cell.url}
+                                              onChange={(e) => updateCell(sec.id, ri, ci, { url: e.target.value })}
+                                              placeholder="Link URL (optional)..."
+                                            />
+                                          )}
+                                        </div>
+                                        <button
+                                          type="button"
+                                          onClick={() => toggleCellExpand(cellKey)}
+                                          title={expanded ? "Hide link URL" : "Add link URL"}
+                                          className={`mt-0.5 p-1 rounded text-xs transition-colors flex-shrink-0 ${expanded || cell.url ? "text-blue-500 bg-blue-50" : "text-slate-300 hover:text-slate-500"}`}
+                                        >
+                                          🔗
+                                        </button>
+                                      </div>
+                                    </td>
+                                  );
+                                })}
+                                <td className="border border-slate-100 p-1 text-center align-top">
+                                  <button onClick={() => removeTableRow(sec.id, ri)} className="p-1 text-red-400 hover:text-red-600 mt-0.5">
                                     <FaTrash className="text-xs" />
                                   </button>
                                 </td>
@@ -535,9 +610,10 @@ export default function AdminAnnouncements({ token }: { token: string | null }) 
                     </div>
                   )}
 
-                  {/* Links Section */}
+                  {/* ── Links Section ── */}
                   {sec.type === "links" && (
                     <div className="space-y-2">
+                      <p className="text-xs text-slate-400 mb-3">Each link becomes a premium button on the frontend.</p>
                       {sec.links.map((lnk, li) => (
                         <div key={li} className="flex gap-2 items-center">
                           <Input
@@ -547,7 +623,7 @@ export default function AdminAnnouncements({ token }: { token: string | null }) 
                               const links = sec.links.map((l, i) => i === li ? { ...l, label: e.target.value } : l);
                               updateSection(sec.id, { links });
                             }}
-                            placeholder="Button label"
+                            placeholder="Button label (e.g. Apply Now)"
                           />
                           <Input
                             className="h-9 text-sm flex-[2]"
