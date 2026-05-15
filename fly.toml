@@ -1,11 +1,11 @@
 app = 'apna-enterprise'
-primary_region = 'sin'
+primary_region = 'bom'
 
 [build]
 
 [env]
-  NODE_ENV = "production"
-  PORT = "8080"
+  NODE_ENV = 'production'
+  PORT = '8080'
 
 [http_service]
   internal_port = 8080
@@ -15,18 +15,18 @@ primary_region = 'sin'
   min_machines_running = 0
 
   [http_service.concurrency]
-    type = "connections"
+    type = 'connections'
     hard_limit = 25
     soft_limit = 20
 
-[[http_service.checks]]
-  grace_period = "10s"
-  interval = "30s"
-  method = "GET"
-  path = "/api/healthz"
-  timeout = "5s"
+  [[http_service.checks]]
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '15s'
+    method = 'GET'
+    path = '/api/healthz'
 
 [[vm]]
-  memory = "512mb"
-  cpu_kind = "shared"
+  memory = '256mb'
+  cpu_kind = 'shared'
   cpus = 1

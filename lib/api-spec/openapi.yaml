@@ -234,6 +234,27 @@ components:
             - PAN Card Apply
             - Aadhaar Card Services
             - Voter Card Apply
+            - Passport Apply
+            - Learning License
+            - Driving License
+            - UDID Certificate Apply
+            - E-Shram Card
+            - Schedule Caste Certificate
+            - Punjab Resident Certificate
+            - Income Certificate
+            - UDYAM Certificate (MSME)
+            - GST Registration
+            - Job Application Forms (Govt Naukri)
+            - College Admission Forms
+            - School Admission Forms
+            - Competitive Exam Forms
+            - Scholarship Forms
+            - General Online Form Filling
+            - Document Scanning
+            - Printing Services
+            - Website Design Services
+            - AEPS (Aadhaar Enabled Payment System)
+            - Online Payments
         message:
           type: string
           maxLength: 1000

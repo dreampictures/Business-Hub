@@ -1,10 +1,10 @@
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
 
 RUN npm install -g pnpm@10
 
 WORKDIR /app
 
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml tsconfig.base.json ./
 
 COPY lib/db/package.json ./lib/db/
 COPY lib/api-zod/package.json ./lib/api-zod/

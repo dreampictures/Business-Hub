@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp, integer } from "drizzle-orm/pg-core";
+import { pgTable, serial, text, timestamp, integer, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -50,3 +50,26 @@ export const pageViewsTable = pgTable("page_views", {
 });
 
 export type PageView = typeof pageViewsTable.$inferSelect;
+
+export const announcementsTable = pgTable("announcements", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  shortDesc: text("short_desc"),
+  category: text("category").notNull().default("General"),
+  department: text("department"),
+  publishDate: timestamp("publish_date").defaultNow(),
+  startDate: timestamp("start_date"),
+  lastDate: timestamp("last_date"),
+  vacancyCount: integer("vacancy_count"),
+  officialWebsite: text("official_website"),
+  officialNotificationUrl: text("official_notification_url"),
+  applyUrl: text("apply_url"),
+  isPublished: boolean("is_published").default(false).notNull(),
+  isUrgent: boolean("is_urgent").default(false).notNull(),
+  isFeatured: boolean("is_featured").default(false).notNull(),
+  sections: text("sections").default("[]").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export type Announcement = typeof announcementsTable.$inferSelect;

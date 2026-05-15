@@ -50,3 +50,4 @@ JWT_SECRET = "global-enterprise-jwt-secret-2024-secure-key"
 
 [nix]
 channel = "stable-25_05"
+packages = ["fly"]
